@@ -1,0 +1,14 @@
+model:
+  type: xgboost  # Options: random_forest, xgboost, lightgbm
+  params:
+    n_estimators: 300
+    max_depth: 6
+    learning_rate: 0.1
+    subsample: 0.8
+    colsample_bytree: 0.8
+    gamma: 0
+    min_child_weight: 1
+    reg_alpha: 0
+    reg_lambda: 1
+    n_jobs: -1
+    random_state: 42

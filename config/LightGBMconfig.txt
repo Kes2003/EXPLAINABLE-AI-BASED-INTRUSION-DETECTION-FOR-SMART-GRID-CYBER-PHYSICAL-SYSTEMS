@@ -1,0 +1,27 @@
+default_model: lightgbm
+
+model:
+  type: lightgbm
+  params:
+    n_estimators: 300
+    max_depth: -1
+    learning_rate: 0.1
+    num_leaves: 31
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0
+    reg_lambda: 1
+    n_jobs: -1
+    random_state: 42
+```
+
+---
+
+## 🎯 Your Current Results Analysis
+
+From your output:
+```
+Dataset loaded: 30,000 rows, 19 columns
+After oversampling: 117,135 rows
+Training random_forest model...  ← This says random_forest but you wanted xgboost
+Model accuracy: 0.9975  ← Excellent accuracy! 99.75%

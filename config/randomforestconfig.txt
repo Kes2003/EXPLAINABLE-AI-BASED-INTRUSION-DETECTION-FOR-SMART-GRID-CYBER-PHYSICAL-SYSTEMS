@@ -1,0 +1,12 @@
+default_model: random_forest
+
+model:
+  type: random_forest
+  params:
+    n_estimators: 300
+    max_depth: null  # null means no limit
+    min_samples_split: 4
+    min_samples_leaf: 2
+    n_jobs: -1
+    class_weight: balanced
+    random_state: 42

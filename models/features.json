@@ -1,0 +1,22 @@
+{
+  "features": [
+    "voltage_v",
+    "current_a",
+    "frequency_hz",
+    "power_factor",
+    "active_power_kw",
+    "reactive_power_kvar",
+    "thd_percent",
+    "breaker_closed",
+    "packet_rate",
+    "packet_error_rate",
+    "substation_temp_c",
+    "transformer_oil_temp_c",
+    "line_load_percent",
+    "tap_position",
+    "phase_imbalance_percent",
+    "feeder_voltage_v",
+    "feeder_current_a",
+    "demand_kw"
+  ]
+}

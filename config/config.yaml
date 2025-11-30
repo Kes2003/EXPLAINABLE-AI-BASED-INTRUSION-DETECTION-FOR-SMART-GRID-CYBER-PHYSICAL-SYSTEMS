@@ -1,0 +1,58 @@
+# Random seed for reproducibility
+seed: 42
+
+# Default model selection for inference and for train save-naming.
+# Allowed values: random_forest, xgboost, lightgbm
+default_model: lightgbm
+
+# Feature list - must match the columns in your dataset
+features:
+  - voltage_v
+  - current_a
+  - frequency_hz
+  - power_factor
+  - active_power_kw
+  - reactive_power_kvar
+  - thd_percent
+  - breaker_closed
+  - packet_rate
+  - packet_error_rate
+  - substation_temp_c
+  - transformer_oil_temp_c
+  - line_load_percent
+  - tap_position
+  - phase_imbalance_percent
+  - feeder_voltage_v
+  - feeder_current_a
+  - demand_kw
+
+# Model configuration
+
+model:
+  type: lightgbm
+  params:
+    n_estimators: 300
+    max_depth: -1
+    learning_rate: 0.1
+    num_leaves: 31
+    subsample: 0.8
+    colsample_bytree: 0.8
+    reg_alpha: 0
+    reg_lambda: 1
+    n_jobs: -1
+    random_state: 42
+
+# Training configuration
+train:
+  test_size: 0.2  # 20% of data for testing
+  stratify: true  # Maintain class distribution in train/test split
+  shuffle: true   # Shuffle data before splitting
+
+# Threshold for automated prevention actions
+thresholds:
+  alert_probability: 0.7  # Minimum confidence for automated actions (0.0-1.0)
+
+# Safety note:
+# The training script enforces use of 'real' datasets by default.
+# If you want to train on synthetic data (not recommended for production),
+# pass the flag --allow-synthetic to src.train CLI.
