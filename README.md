@@ -1,4 +1,4 @@
-# AI-Enabled Intrusion Detection for Smart Grids
+# EXPLAINABLE AI-BASED INTRUSION DETECTION FOR SMART GRID CYBER-PHYSICAL SYSTEMS
 
 This repository contains a complete, configurable machine learning pipeline for **AI-enabled intrusion detection and prevention in smart grids**. The system supports:
 
