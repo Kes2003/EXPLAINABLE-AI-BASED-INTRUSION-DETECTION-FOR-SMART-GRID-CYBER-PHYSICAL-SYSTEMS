@@ -43,9 +43,11 @@ def load_numbers():
     T = json.loads((RESULTS / "corrected_ttest.json").read_text())
     msu = RESULTS / "msu_shap_multiclass.json"
     M = json.loads(msu.read_text()) if msu.exists() else None
+    abl = RESULTS / "msu_ablation_multiclass.json"
+    A = json.loads(abl.read_text()) if abl.exists() else None
     P = R["prevention_benchmark"]
     n = {
-        "R": R, "T": T, "M": M, "P": P,
+        "R": R, "T": T, "M": M, "A": A, "P": P,
         "resp_acc": f"{100 * P['response_accuracy']:.1f}%",
         "resp_correct": f"{round(P['response_accuracy'] * P['n_predictions']):,}",
         "n_pred": f"{P['n_predictions']:,}",
@@ -274,6 +276,12 @@ def revise_methods(D: Doc, n):
            ("using the per-fold Macro-F1 scores as paired observations.",
             "using the per-fold Macro-F1 scores as paired observations. Section 3.6.1 repeats this analysis with "
             "substantially greater statistical power."))
+
+    # Section 3.7 -- ablation extended to MSU/ORNL (R4 point 3)
+    D.edit("To evaluate the contribution of each of the four feature groups",
+           ("contribution to overall detection performance.",
+            "contribution to overall detection performance. Section 4.7 applies the same procedure to the MSU/ORNL "
+            "dataset, using that dataset's own feature groups and the Table 8 pipeline."))
 
     # Section 3.8 and 3.9
     D.edit("Deployment latency is measured end-to-end",
@@ -703,7 +711,22 @@ def msu(n):
          "phasors": f"{g['PMU voltage phasors'] + g['PMU current phasors']:.1f}%",
          "f1": f"{M['macro_f1_mean']:.4f} ± {M['macro_f1_std']:.4f}",
          "rows": f"{M['shap_rows_explained']:,}", "per_fold": f"{M['shap_rows_explained'] // 5:,}"}
+    A = n["A"]
+    ab = A["ablations"]
+    m.update({
+        "abl_base": f"{A['baseline']['mean']:.4f}",
+        "d_curr": f"{ab['PMU current phasors']['drop']:.3f}", "d_volt": f"{ab['PMU voltage phasors']['drop']:.3f}",
+        "d_cyber": f"{ab['Cyber-side (logs + relay status)']['drop']:.3f}",
+        "d_freq": f"{ab['PMU frequency / frequency delta']['drop']:.3f}",
+        "d_imp": f"{ab['PMU apparent impedance']['drop']:.3f}",
+        "d_imp_abs": f"{-ab['PMU apparent impedance']['drop']:.3f}",
+    })
     # The prose states this specific pattern; fail loudly if the data ever disagree.
+    assert f"{A['baseline']['mean']:.4f}" == "0.8307"
+    assert ab["PMU current phasors"]["drop"] > ab["PMU voltage phasors"]["drop"] > 0.03
+    assert all(abs(ab[k]["drop"]) < 0.005 for k in ("PMU apparent impedance", "PMU frequency / frequency delta",
+                                                    "Cyber-side (logs + relay status)"))
+    assert ab["PMU apparent impedance"]["drop"] < 0
     assert (m["f1"] == "0.8307 ± 0.0022"), "MSU/ORNL run no longer reproduces Table 8"
     assert g["Snort IDS log"] == 0.0 and cyber < 2.0
     assert [r["feature"] for r in M["ranking"][:3]] == ["R4-PM2:V", "R1-PM2:V", "R3-PM2:V"]
@@ -715,15 +738,17 @@ def abstract_msu_shap_sentence(n):
     m = msu(n)
     return ("Extending SHAP explainability to the external dataset showed that its models rely almost entirely on "
             f"PMU voltage and current measurements ({m['phasors']} of attribution), with relay, control-panel, and "
-            f"Snort log signals contributing {m['cyber']} -- evidence that the communication-domain signal most "
-            "informative on the synthetic data is effectively absent from the real-world dataset.")
+            f"Snort log signals contributing {m['cyber']}, and feature-group ablation confirmed that removing all "
+            f"cyber-side columns costs only {m['d_cyber']} Macro-F1 (versus 0.192 for communication features on the "
+            "synthetic data) -- evidence that the communication-domain signal most informative on the synthetic "
+            "data is effectively absent from the real-world dataset.")
 
 
 def conclusion_msu_sentence(n):
     m = msu(n)
     return ("Extending SHAP explainability to this dataset (Section 4.7) showed that its models rely almost entirely "
             f"on PMU voltage and current measurements, with cyber-side log signals contributing only {m['cyber']} of "
-            "the attribution -- consistent with the absence of the communication-domain evidence that is most "
+            f"the attribution and only {m['d_cyber']} Macro-F1 when ablated -- consistent with the absence of the communication-domain evidence that is most "
             "informative in the synthetic data -- and that its channel-level feature schema limits how directly the "
             "explanations can be used by an operator.")
 
@@ -735,8 +760,8 @@ def s47(D: Doc, n):
     body = "Two findings stand out."
     p = D.after(h, body,
         "The explainability and ablation analyses of Sections 4.3 and 4.4 were performed on the synthetic dataset. "
-        "To determine what evidence the external-validation models of Section 4.6 rely on, we extended the SHAP "
-        "analysis to the MSU/ORNL dataset. Two properties of this dataset shape the analysis. First, its 128 "
+        "To determine what evidence the external-validation models of Section 4.6 rely on, we extended both the "
+        "SHAP analysis and the feature-group ablation to the MSU/ORNL dataset. Two properties of this dataset shape the analysis. First, its 128 "
         "features are channel-level identifiers -- for example, R1-PM2:V is a voltage-magnitude channel of the PMU "
         "at relay R1 -- whose physical meaning must be looked up in the dataset documentation [40], rather than "
         "named domain quantities such as packet_rate or phase_imbalance_percent. Second, with 37 classes, a "
@@ -769,11 +794,40 @@ def s47(D: Doc, n):
         f"nothing: the binary control-panel and relay log indicators {m['logs']}, the relay status fields "
         f"{m['status']}, and the Snort IDS log indicators exactly zero -- the model never splits on them.")
     p = D.after(p, body,
-        "This result bears directly on the performance gap of Section 4.6. On the synthetic dataset, the two "
+        "To test whether these attributions reflect genuine dependence, we repeated the feature-group ablation of "
+        "Section 4.4 on the same 37-class task: each group was removed in turn and the Table 8 LightGBM pipeline "
+        "was re-run on the same five folds (Table 8c). Removing the current phasors or the voltage phasors reduced "
+        f"Macro-F1 by {m['d_curr']} and {m['d_volt']}, respectively, confirming that the physical phasor "
+        "measurements carry the discriminative signal. Removing all 16 cyber-side columns together (control-panel, "
+        f"relay, and Snort logs and the relay status fields) reduced Macro-F1 by only {m['d_cyber']}, and removing "
+        f"frequency/frequency delta by {m['d_freq']}; both changes are of the order of one fold-level standard "
+        "deviation. Removing the apparent-impedance group did not reduce performance at all (Macro-F1 changed by "
+        f"+{m['d_imp_abs']}), even though it received {m['imp']} of the SHAP attribution: apparent impedance is "
+        "derived from the voltage and current phasors, so the model can recover the same information from them. "
+        "SHAP attribution and ablation therefore answer different questions -- what the trained model uses, and "
+        "what it cannot do without -- and are reported together for this reason.")
+    rows = [["**Configuration**", "**Features Removed**", "**Macro-F1 (mean ± std)**", "**Drop vs. All Features**"]]
+    A = n["A"]
+    rows.append([f"All {A['baseline']['n_features']} features (Table 8)", "0",
+                 f"{A['baseline']['mean']:.4f} ± {A['baseline']['std']:.4f}", "--"])
+    labels = {"PMU voltage phasors": "Without voltage phasors", "PMU current phasors": "Without current phasors",
+              "PMU apparent impedance": "Without apparent impedance",
+              "PMU frequency / frequency delta": "Without frequency / frequency delta",
+              "Cyber-side (logs + relay status)": "Without cyber-side columns (logs, relay status)"}
+    for k, v in sorted(A["ablations"].items(), key=lambda kv: -kv[1]["drop"]):
+        rows.append([labels[k], str(v["n_removed"]), f"{v['mean']:.4f} ± {v['std']:.4f}", f"{v['drop']:+.4f}"])
+    tbl = clone_table(D.table("Configuration"), p, rows, D.mark)
+    p = D.after(tbl, "Table 8. External Validation",
+                "Table 8c. Feature-Group Ablation on the MSU/ORNL Dataset (37-Class, LightGBM, Five-Fold "
+                "Cross-Validation; Same Folds as Table 8)")
+    p = D.after(p, body,
+        "These results bear directly on the performance gap of Section 4.6. On the synthetic dataset, the two "
         "communication-domain features (packet rate and packet error rate) form the most influential feature "
         "group (Sections 4.3, 4.4); on MSU/ORNL, the only cyber-side signals available receive "
         f"{m['cyber']} of the attribution in total, and the model must separate 37 scenarios from electrical "
-        "signatures alone. The SHAP analysis therefore corroborates the fourth explanation offered in Section 4.6: "
+        f"signatures alone; correspondingly, removing those signals costs only {m['d_cyber']} Macro-F1 on MSU/ORNL, "
+        "compared with 0.192 for the communication-domain group on the synthetic dataset. The SHAP and ablation "
+        "analyses therefore corroborate the fourth explanation offered in Section 4.6: "
         "the category of evidence that is most informative on the synthetic data is effectively absent from the "
         "real-world dataset. It also means that the multidomain premise of this work -- that cyber and physical "
         "evidence are complementary -- could not be exercised on MSU/ORNL, whose attack scenarios are detectable "
@@ -784,14 +838,13 @@ def s47(D: Doc, n):
         "them into an operator-facing statement (which relay, which quantity, which physical event) requires the "
         "dataset documentation and power-system expertise: explainability is only as actionable as the underlying "
         "feature schema. Second, this analysis is global; per-class explanations for the 37 scenarios, a stability "
-        "check analogous to Section 4.3, and a feature-group ablation on MSU/ORNL were not performed, and are "
-        "noted as limitations in Section 4.10.")
+        "check analogous to Section 4.3 were not performed on MSU/ORNL, and are noted as limitations in "
+        "Section 4.10.")
 
 
 LIMITATION_XAI = (
     "Fourth, the SHAP analysis of the MSU/ORNL dataset (Section 4.7) is global rather than per-class, is based on "
-    "a random sample of held-out rows, and was not accompanied by a stability check or a feature-group ablation "
-    "on that dataset. It also exposed a schema-driven limit on explainability: MSU/ORNL's channel-level features "
+    "a random sample of held-out rows, and was not accompanied by a stability check on that dataset. It also exposed a schema-driven limit on explainability: MSU/ORNL's channel-level features "
     "are much less directly interpretable to a grid operator than the synthetic dataset's named domain "
     "quantities, independent of any modeling choice."
 )

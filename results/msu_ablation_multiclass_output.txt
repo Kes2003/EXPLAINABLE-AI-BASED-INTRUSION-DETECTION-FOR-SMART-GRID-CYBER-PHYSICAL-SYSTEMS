@@ -1,0 +1,9 @@
+Found 15 file(s) in /home/user/EXPLAINABLE-AI-BASED-INTRUSION-DETECTION-FOR-SMART-GRID-CYBER-PHYSICAL-SYSTEMS/data/external/msu_ics_power/multiclass: 15 .arff, 0 .csv
+Combined shape: (78377, 129)
+Baseline (all 128 features): 0.8307 +/- 0.0022 (Table 8: 0.8307 +/- 0.0022)
+without PMU voltage phasors                (48 removed): 0.7837 +/- 0.0026  drop = +0.0469
+without PMU current phasors                (48 removed): 0.7696 +/- 0.0034  drop = +0.0611
+without PMU apparent impedance             ( 8 removed): 0.8336 +/- 0.0024  drop = -0.0030
+without PMU frequency / frequency delta    ( 8 removed): 0.8272 +/- 0.0031  drop = +0.0035
+without Cyber-side (logs + relay status)   (16 removed): 0.8265 +/- 0.0035  drop = +0.0041
+Saved results/msu_ablation_multiclass.json
