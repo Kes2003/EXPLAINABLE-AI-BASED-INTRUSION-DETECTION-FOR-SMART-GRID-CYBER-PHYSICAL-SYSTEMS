@@ -28,6 +28,11 @@ try:
 except Exception:
     lgb = None
 
+try:
+    import catboost as cb
+except Exception:
+    cb = None
+
 
 # ---------------------------------------------------------
 # MODEL FACTORY
@@ -63,6 +68,15 @@ def build_model(model_cfg: Dict[str, Any]):
         lgb_params.pop('verbose', None)
         
         return lgb.LGBMClassifier(**lgb_params)
+
+    if model_type == "catboost":
+        if cb is None:
+            raise RuntimeError("catboost not installed. Install via: pip install catboost")
+
+        cb_params = params.copy()
+        cb_params.setdefault("verbose", False)
+        cb_params.setdefault("random_seed", cb_params.pop("random_state", 42))
+        return cb.CatBoostClassifier(**cb_params)
 
     raise ValueError(f"Unsupported model type: {model_type}")
 
@@ -121,6 +135,59 @@ def train_eval(
                 "precision": precision.tolist(),
                 "recall": recall.tolist(),
             }
+        except Exception:
+            pass
+
+    ensure_dir(artifacts_dir)
+    joblib.dump(model, Path(artifacts_dir) / "last_model.joblib")
+
+    return model, metrics, y_test, y_pred, y_proba
+
+
+# ---------------------------------------------------------
+# TRAIN + EVAL (pre-split variant -- avoids leakage from external oversampling)
+# ---------------------------------------------------------
+def train_eval_presplit(
+    X_train: np.ndarray,
+    y_train: np.ndarray,
+    X_test: np.ndarray,
+    y_test: np.ndarray,
+    model_cfg: Dict[str, Any],
+    artifacts_dir: Path | str = "artifacts",
+) -> Tuple[Any, Dict[str, Any], np.ndarray, np.ndarray, np.ndarray | None]:
+    """
+    Same as train_eval, but the caller supplies an already-correct train/test
+    split (e.g. oversampled train + untouched test). Use this whenever any
+    oversampling/augmentation happens outside this function, so the split
+    itself stays leakage-free.
+    """
+    model = build_model(model_cfg)
+    model.fit(X_train, y_train)
+
+    y_pred = model.predict(X_test)
+
+    try:
+        y_proba = model.predict_proba(X_test)
+    except Exception:
+        y_proba = None
+
+    report = classification_report(y_test, y_pred, output_dict=True)
+    cm = confusion_matrix(y_test, y_pred).tolist()
+
+    metrics: Dict[str, Any] = {
+        "classification_report": report,
+        "confusion_matrix": cm,
+    }
+
+    unique = np.unique(np.concatenate([y_train, y_test]))
+    if y_proba is not None and len(unique) == 2:
+        try:
+            auc_val = float(roc_auc_score(y_test, y_proba[:, 1]))
+            fpr, tpr, _ = roc_curve(y_test, y_proba[:, 1])
+            precision, recall, _ = precision_recall_curve(y_test, y_proba[:, 1])
+            metrics["roc_auc"] = auc_val
+            metrics["roc_curve"] = {"fpr": fpr.tolist(), "tpr": tpr.tolist()}
+            metrics["precision_recall_curve"] = {"precision": precision.tolist(), "recall": recall.tolist()}
         except Exception:
             pass
 

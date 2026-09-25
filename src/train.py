@@ -18,11 +18,11 @@ from sklearn.metrics import confusion_matrix
 
 try:
     from .preprocess import Preprocessor
-    from .model import train_eval, save_model
+    from .model import train_eval, train_eval_presplit, save_model
     from .utils import ensure_dir, save_json, set_global_seed
 except ImportError:
     from preprocess import Preprocessor
-    from model import train_eval, save_model
+    from model import train_eval, train_eval_presplit, save_model
     from utils import ensure_dir, save_json, set_global_seed
 
 
@@ -321,31 +321,45 @@ def main():
     df = pd.read_csv(data_path)
     print(f"Dataset loaded: {len(df):,} rows, {len(df.columns)} columns")
 
-    # Oversample minority classes to help tamper detection
-    print("Oversampling minority classes...")
-    df_balanced = oversample_minority_classes(df, label_col="label", random_state=seed)
-    print(f"After oversampling: {len(df_balanced):,} rows")
+    # IMPORTANT (data-leakage fix): split into train/test FIRST, then oversample
+    # ONLY the training portion. Oversampling before the split (the previous
+    # behaviour) can place duplicated copies of the same minority-class row in
+    # both the train and test sets, which inflates test-set metrics. Splitting
+    # first guarantees the test set is untouched, non-duplicated real data.
+    from sklearn.model_selection import train_test_split as _tts
+    print("Splitting into train/test BEFORE oversampling (avoids train/test leakage)...")
+    train_df, test_df = _tts(
+        df,
+        test_size=train_cfg.get("test_size", 0.2),
+        stratify=df["label"] if train_cfg.get("stratify", True) else None,
+        shuffle=train_cfg.get("shuffle", True),
+        random_state=seed,
+    )
+
+    print("Oversampling minority classes (training split only)...")
+    train_df_balanced = oversample_minority_classes(train_df, label_col="label", random_state=seed)
+    print(f"Training rows after oversampling: {len(train_df_balanced):,}  |  Test rows (untouched): {len(test_df):,}")
 
     preproc = Preprocessor(
         features=features,
         scaler_path=models_dir / f"scaler_{default_model_type}.joblib",
         label_encoder_path=models_dir / f"label_encoder_{default_model_type}.joblib",
     )
-    
+
     print("Preprocessing data...")
-    X, y = preproc.fit_transform(df_balanced)
-    print(f"Preprocessed: X shape = {X.shape}, y shape = {y.shape}")
+    X_train, y_train = preproc.fit_transform(train_df_balanced)
+    X_test = preproc.transform(test_df)
+    y_test = preproc.label_encoder.transform(test_df["label"].astype(str).values)
+    print(f"Preprocessed: X_train = {X_train.shape}, X_test = {X_test.shape}")
 
     print(f"Training {default_model_type} model...")
-    model, metrics, y_test, y_pred, y_proba = train_eval(
-        X,
-        y,
+    model, metrics, y_test, y_pred, y_proba = train_eval_presplit(
+        X_train, y_train, X_test, y_test,
         model_cfg=model_cfg,
-        test_size=train_cfg.get("test_size", 0.2),
-        stratify=train_cfg.get("stratify", True),
-        shuffle=train_cfg.get("shuffle", True),
         artifacts_dir=artifacts_dir,
     )
+    # df_balanced kept only for the visualization step below (class-distribution chart)
+    df_balanced = train_df_balanced
 
     # Save under model.joblib and model_{type}.joblib for selection
     model_path = models_dir / "model.joblib"

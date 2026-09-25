@@ -1,0 +1,697 @@
+Loaded 30,000 rows, classes: {'normal': 23427, 'dos': 1896, 'fdi': 1762, 'tamper': 1565, 'overload': 1350}
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing row-wise multi-threading, the overhead of testing was 0.001138 seconds.
+You can set `force_row_wise=true` to remove the overhead.
+And if memory is not enough, you can set `force_col_wise=true`.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93705, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing row-wise multi-threading, the overhead of testing was 0.001167 seconds.
+You can set `force_row_wise=true` to remove the overhead.
+And if memory is not enough, you can set `force_col_wise=true`.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93705, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.002843 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93710, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing row-wise multi-threading, the overhead of testing was 0.001145 seconds.
+You can set `force_row_wise=true` to remove the overhead.
+And if memory is not enough, you can set `force_col_wise=true`.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93710, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing row-wise multi-threading, the overhead of testing was 0.001127 seconds.
+You can set `force_row_wise=true` to remove the overhead.
+And if memory is not enough, you can set `force_col_wise=true`.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93710, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[seed 42] (1/10, 146s) random_forest=0.9264, xgboost=0.9266, lightgbm=0.9285, catboost=0.8933
+  Reproduction check vs. manuscript Table 2 (seed 42, 5 folds):
+    random_forest  Macro-F1 0.9264 +/- 0.0025   acc 0.9659 +/- 0.0009
+    xgboost        Macro-F1 0.9266 +/- 0.0042   acc 0.9662 +/- 0.0015
+    lightgbm       Macro-F1 0.9285 +/- 0.0030   acc 0.9673 +/- 0.0010
+    catboost       Macro-F1 0.8933 +/- 0.0053   acc 0.9462 +/- 0.0031
+    Table 3 check: lightgbm vs random_forest: W=0.0, p=0.0625
+    Table 3 check: lightgbm vs xgboost: W=1.0, p=0.1250
+    Table 3 check: lightgbm vs catboost: W=0.0, p=0.0625
+  Section 4.9 prevention benchmark: {
+  "threshold": 0.7,
+  "n_predictions": 30000,
+  "response_accuracy": 0.9807333333333333,
+  "false_block_rate": 0.004353950569855295,
+  "false_blocks": 102,
+  "n_true_normal": 23427,
+  "missed_response_rate": 0.0866763666597381,
+  "missed_responses": 417,
+  "n_requiring_action": 4811,
+  "per_class": {
+    "normal": {
+      "n": 23427,
+      "correct_action": 23325
+    },
+    "dos": {
+      "n": 1896,
+      "correct_action": 1781
+    },
+    "fdi": {
+      "n": 1762,
+      "correct_action": 1737
+    },
+    "tamper": {
+      "n": 1565,
+      "correct_action": 1390
+    },
+    "overload": {
+      "n": 1350,
+      "correct_action": 1189
+    }
+  },
+  "latency_us": {
+    "n_calls": 150000,
+    "mean": 1.20867484,
+    "median": 1.118,
+    "p99": 2.129
+  }
+}
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing row-wise multi-threading, the overhead of testing was 0.001475 seconds.
+You can set `force_row_wise=true` to remove the overhead.
+And if memory is not enough, you can set `force_col_wise=true`.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93705, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.003364 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93705, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing row-wise multi-threading, the overhead of testing was 0.001165 seconds.
+You can set `force_row_wise=true` to remove the overhead.
+And if memory is not enough, you can set `force_col_wise=true`.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93710, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing row-wise multi-threading, the overhead of testing was 0.002014 seconds.
+You can set `force_row_wise=true` to remove the overhead.
+And if memory is not enough, you can set `force_col_wise=true`.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93710, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.004255 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93710, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[seed 43] (2/10, 149s) random_forest=0.9276, xgboost=0.9284, lightgbm=0.9300, catboost=0.8943
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.003266 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93705, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.002890 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93705, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.004338 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93710, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing row-wise multi-threading, the overhead of testing was 0.001197 seconds.
+You can set `force_row_wise=true` to remove the overhead.
+And if memory is not enough, you can set `force_col_wise=true`.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93710, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.003034 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93710, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[seed 44] (3/10, 146s) random_forest=0.9276, xgboost=0.9258, lightgbm=0.9308, catboost=0.8926
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.002842 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93705, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing row-wise multi-threading, the overhead of testing was 0.000977 seconds.
+You can set `force_row_wise=true` to remove the overhead.
+And if memory is not enough, you can set `force_col_wise=true`.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93705, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing row-wise multi-threading, the overhead of testing was 0.001144 seconds.
+You can set `force_row_wise=true` to remove the overhead.
+And if memory is not enough, you can set `force_col_wise=true`.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93710, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing row-wise multi-threading, the overhead of testing was 0.001066 seconds.
+You can set `force_row_wise=true` to remove the overhead.
+And if memory is not enough, you can set `force_col_wise=true`.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93710, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing row-wise multi-threading, the overhead of testing was 0.001262 seconds.
+You can set `force_row_wise=true` to remove the overhead.
+And if memory is not enough, you can set `force_col_wise=true`.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93710, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[seed 45] (4/10, 144s) random_forest=0.9281, xgboost=0.9275, lightgbm=0.9287, catboost=0.8948
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.006269 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93705, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.003286 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93705, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.003374 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93710, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing row-wise multi-threading, the overhead of testing was 0.001090 seconds.
+You can set `force_row_wise=true` to remove the overhead.
+And if memory is not enough, you can set `force_col_wise=true`.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93710, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing row-wise multi-threading, the overhead of testing was 0.001093 seconds.
+You can set `force_row_wise=true` to remove the overhead.
+And if memory is not enough, you can set `force_col_wise=true`.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93710, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[seed 46] (5/10, 148s) random_forest=0.9270, xgboost=0.9289, lightgbm=0.9320, catboost=0.8964
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.003654 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93705, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing row-wise multi-threading, the overhead of testing was 0.001057 seconds.
+You can set `force_row_wise=true` to remove the overhead.
+And if memory is not enough, you can set `force_col_wise=true`.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93705, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.003182 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93710, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing row-wise multi-threading, the overhead of testing was 0.001107 seconds.
+You can set `force_row_wise=true` to remove the overhead.
+And if memory is not enough, you can set `force_col_wise=true`.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93710, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.003377 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93710, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[seed 47] (6/10, 144s) random_forest=0.9288, xgboost=0.9279, lightgbm=0.9300, catboost=0.8955
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.003018 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93705, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.005344 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93705, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing row-wise multi-threading, the overhead of testing was 0.001056 seconds.
+You can set `force_row_wise=true` to remove the overhead.
+And if memory is not enough, you can set `force_col_wise=true`.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93710, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing row-wise multi-threading, the overhead of testing was 0.001101 seconds.
+You can set `force_row_wise=true` to remove the overhead.
+And if memory is not enough, you can set `force_col_wise=true`.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93710, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing row-wise multi-threading, the overhead of testing was 0.001660 seconds.
+You can set `force_row_wise=true` to remove the overhead.
+And if memory is not enough, you can set `force_col_wise=true`.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93710, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[seed 48] (7/10, 144s) random_forest=0.9275, xgboost=0.9271, lightgbm=0.9299, catboost=0.8959
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing row-wise multi-threading, the overhead of testing was 0.000957 seconds.
+You can set `force_row_wise=true` to remove the overhead.
+And if memory is not enough, you can set `force_col_wise=true`.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93705, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.002867 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93705, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.006098 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93710, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing row-wise multi-threading, the overhead of testing was 0.000998 seconds.
+You can set `force_row_wise=true` to remove the overhead.
+And if memory is not enough, you can set `force_col_wise=true`.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93710, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing row-wise multi-threading, the overhead of testing was 0.001088 seconds.
+You can set `force_row_wise=true` to remove the overhead.
+And if memory is not enough, you can set `force_col_wise=true`.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93710, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[seed 49] (8/10, 143s) random_forest=0.9268, xgboost=0.9272, lightgbm=0.9299, catboost=0.8953
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing row-wise multi-threading, the overhead of testing was 0.001200 seconds.
+You can set `force_row_wise=true` to remove the overhead.
+And if memory is not enough, you can set `force_col_wise=true`.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93705, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.003001 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93705, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing row-wise multi-threading, the overhead of testing was 0.001246 seconds.
+You can set `force_row_wise=true` to remove the overhead.
+And if memory is not enough, you can set `force_col_wise=true`.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93710, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.003064 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93710, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing row-wise multi-threading, the overhead of testing was 0.001133 seconds.
+You can set `force_row_wise=true` to remove the overhead.
+And if memory is not enough, you can set `force_col_wise=true`.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93710, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[seed 50] (9/10, 145s) random_forest=0.9281, xgboost=0.9282, lightgbm=0.9298, catboost=0.8940
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.002881 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93705, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.002976 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93705, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing row-wise multi-threading, the overhead of testing was 0.001169 seconds.
+You can set `force_row_wise=true` to remove the overhead.
+And if memory is not enough, you can set `force_col_wise=true`.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93710, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.005351 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93710, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+[LightGBM] [Info] Auto-choosing row-wise multi-threading, the overhead of testing was 0.001442 seconds.
+You can set `force_row_wise=true` to remove the overhead.
+And if memory is not enough, you can set `force_col_wise=true`.
+[LightGBM] [Info] Total Bins 4338
+[LightGBM] [Info] Number of data points in the train set: 93710, number of used features: 18
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[LightGBM] [Info] Start training from score -1.609438
+[seed 51] (10/10, 145s) random_forest=0.9274, xgboost=0.9277, lightgbm=0.9302, catboost=0.8952
+
+TABLE 3c -- repeated stratified 5-fold CV, 10 seeds (n = 50 per model)
+  random_forest  Macro-F1 0.9275 +/- 0.0042 (n=50)
+  xgboost        Macro-F1 0.9275 +/- 0.0046 (n=50)
+  lightgbm       Macro-F1 0.9300 +/- 0.0045 (n=50)
+  catboost       Macro-F1 0.8947 +/- 0.0047 (n=50)
+  best model: lightgbm
+  lightgbm vs random_forest: W=134.0, p=1.31e-07, mean diff=+0.0024, lightgbm better in 40/50 folds
+  lightgbm vs xgboost: W=145.0, p=2.84e-07, mean diff=+0.0024, lightgbm better in 41/50 folds
+  lightgbm vs catboost: W=0.0, p=1.78e-15, mean diff=+0.0352, lightgbm better in 50/50 folds
+
+Saved results/reviewer_experiments.json

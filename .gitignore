@@ -76,3 +76,15 @@ Thumbs.db
 test_outputs/
 *.test.csv
 
+
+# CatBoost training scratch output
+catboost_info/
+
+# Public MSU/ORNL dataset (download per scripts/msu_ics_dataset_eval.py)
+data/external/msu_ics_power/
+
+# Manuscript documents stay local (not published to GitHub)
+manuscript/*.docx
+manuscript/source/
+manuscript_revision3.md
+response_to_reviewers.md
