@@ -12,7 +12,7 @@ variance by the test/train size ratio:
 
 with J = 50 paired fold differences and n_test/n_train = 1/4 for 5-fold CV.
 
-Reads results/reviewer_experiments.json; writes results/corrected_ttest.json.
+Reads results/repeated_cv_and_policy_eval.json; writes results/corrected_ttest.json.
 """
 from __future__ import annotations
 
@@ -26,7 +26,7 @@ ROOT = Path(__file__).resolve().parent.parent
 
 
 def main():
-    res = json.loads((ROOT / "results" / "reviewer_experiments.json").read_text())
+    res = json.loads((ROOT / "results" / "repeated_cv_and_policy_eval.json").read_text())
     scores = {k: np.array(v) for k, v in res["per_fold_macro_f1"].items()}
     best = res["best_model"]
     ratio = 1 / 4  # 5-fold CV: test fold is 1/4 the size of the training folds

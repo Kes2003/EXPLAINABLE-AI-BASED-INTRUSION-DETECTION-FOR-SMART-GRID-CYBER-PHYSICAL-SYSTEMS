@@ -8,9 +8,9 @@ error instead of producing a wrong document.
 
 | Manuscript item | Command (run from the project root) | Result file / console log |
 |---|---|---|
-| Table 3c, Section 3.6.1: repeated CV (10 seeds, n = 50) and Wilcoxon tests | `python run_reviewer_experiments.py` | `results/reviewer_experiments.json`, `results/reviewer_experiments_output.txt` |
+| Table 3c, Section 3.6.1: repeated CV (10 seeds, n = 50) and Wilcoxon tests | `python run_repeated_cv_and_policy_eval.py` | `results/repeated_cv_and_policy_eval.json`, `results/repeated_cv_and_policy_eval_output.txt` |
 | Table 3c: corrected resampled t-test (Nadeau–Bengio) | `python scripts/corrected_resampled_ttest.py` | `results/corrected_ttest.json` |
-| Section 4.9, Table 10: response accuracy, false-block rate, missed-response rate, policy latency | `python run_reviewer_experiments.py` (seed-42 out-of-fold predictions passed through `src/api.py::compute_preventive_action`) | `results/reviewer_experiments.json` → `prevention_benchmark` |
+| Section 4.9, Table 10: response accuracy, false-block rate, missed-response rate, policy latency | `python run_repeated_cv_and_policy_eval.py` (seed-42 out-of-fold predictions passed through `src/api.py::compute_preventive_action`) | `results/repeated_cv_and_policy_eval.json` → `prevention_benchmark` |
 | Section 4.7, Table 8b: MSU/ORNL SHAP ranking and group shares | `python -m scripts.msu_shap_analysis --data_dir data/external/msu_ics_power/multiclass` | `results/msu_shap_multiclass.json`, `results/msu_shap_multiclass_output.txt` |
 | Section 4.7, Table 8c: MSU/ORNL feature-group ablation | `python -m scripts.msu_ablation_study --data_dir data/external/msu_ics_power/multiclass` | `results/msu_ablation_multiclass.json`, `results/msu_ablation_multiclass_output.txt` |
 
@@ -18,7 +18,7 @@ error instead of producing a wrong document.
 
 - Seed 42 of the repeated CV runs the same protocol as `scripts/cv_evaluation.py`. It reproduces
   every value in Table 2 and every Wilcoxon result in Table 3 exactly (see the reproduction check
-  in `results/reviewer_experiments_output.txt`).
+  in `results/repeated_cv_and_policy_eval_output.txt`).
 - Both MSU/ORNL scripts first re-run the Table 8 LightGBM 37-class pipeline, which reproduces
   0.8307 ± 0.0022 exactly, before computing SHAP values or ablations.
 

@@ -1,5 +1,5 @@
 """
-run_reviewer_experiments.py -- new analyses for the Reviewer 4 revision.
+run_repeated_cv_and_policy_eval.py -- repeated cross-validation and prevention-policy evaluation.
 
 Reuses the exact pipeline of scripts/cv_evaluation.py (the script that
 produced manuscript Tables 2 and 3):
@@ -21,9 +21,9 @@ What it computes:
      class-to-action mapping (Table 10); the policy call itself is timed.
 
 Usage (from the project root):
-    python run_reviewer_experiments.py
+    python run_repeated_cv_and_policy_eval.py
 Outputs:
-    results/reviewer_experiments.json
+    results/repeated_cv_and_policy_eval.json
 """
 from __future__ import annotations
 
@@ -227,9 +227,9 @@ def main():
         "prevention_benchmark": prev,
     }
     (ROOT / "results").mkdir(exist_ok=True)
-    with open(ROOT / "results" / "reviewer_experiments.json", "w") as f:
+    with open(ROOT / "results" / "repeated_cv_and_policy_eval.json", "w") as f:
         json.dump(out, f, indent=2)
-    print("\nSaved results/reviewer_experiments.json")
+    print("\nSaved results/repeated_cv_and_policy_eval.json")
 
 
 if __name__ == "__main__":
