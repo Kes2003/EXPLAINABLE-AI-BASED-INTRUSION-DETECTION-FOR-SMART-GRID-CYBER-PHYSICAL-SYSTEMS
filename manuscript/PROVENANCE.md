@@ -40,6 +40,7 @@ python manuscript/build_manuscript.py        # Manuscript_R3_clean.docx, Manuscr
 python manuscript/build_response_letter.py   # Response_to_Reviewers_R3.docx
 ```
 
-The source is the Revision-2 Word file in `manuscript/source/`. `manuscript_revision3.md` and
-`response_to_reviewers.md` at the project root are text-only pandoc exports of the built Word
-files.
+The manuscript documents are deliberately not stored in this repository. The build reads
+the Revision-2 Word file from `manuscript/source/Smart_Grid_IDPS_Manuscript_R2_Final_1.docx`,
+which you must place there yourself. The outputs (`manuscript/*.docx`, plus the text exports
+`manuscript_revision3.md` and `response_to_reviewers.md`) are gitignored.
