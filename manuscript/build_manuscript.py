@@ -39,7 +39,8 @@ MODEL_NAMES = {"random_forest": "Random Forest", "xgboost": "XGBoost", "lightgbm
 def load_numbers():
     R = json.loads((RESULTS / "reviewer_experiments.json").read_text())
     T = json.loads((RESULTS / "corrected_ttest.json").read_text())
-    M = json.loads((RESULTS / "msu_shap_multiclass.json").read_text())
+    msu = RESULTS / "msu_shap_multiclass.json"
+    M = json.loads(msu.read_text()) if msu.exists() else None
     P = R["prevention_benchmark"]
     n = {
         "R": R, "T": T, "M": M, "P": P,
@@ -96,8 +97,9 @@ class Doc:
         assert len(hits) == 1, f"{len(hits)} paragraphs start with {prefix!r}"
         return hits[0]
 
-    def table(self, first_cell):
-        hits = [t for t in self.d.tables if norm(t.rows[0].cells[0].text).startswith(norm(first_cell))]
+    def table(self, first_cell, ncols=None):
+        hits = [t for t in self.d.tables if norm(t.rows[0].cells[0].text).startswith(norm(first_cell))
+                and (ncols is None or len(t.columns) == ncols)]
         assert len(hits) == 1, f"{len(hits)} tables start with {first_cell!r}"
         return hits[0]
 
@@ -249,9 +251,9 @@ def revise_methods(D: Doc, n):
         "Output: predicted class y_t; SHAP attribution phi_t; policy action a_t (design-level only)":
             "Output: predicted class y_t; SHAP attribution phi_t; policy action a_t",
         "6: a_t <- POLICY_ENGINE.lookup(y_t)      // rule-based class-to-action mapping;":
-            "6: a_t <- POLICY_ENGINE.lookup(y_t, p_t, tau) // class-to-action mapping (Table 10), applied",
+            "6: a_t <- POLICY_ENGINE(y_t, p_t)       // Table 10 action if p_t >= tau (0.7);",
         "                                          // architected but NOT independently benchmarked":
-            "                                          // only if p_t >= tau (tau = 0.7); evaluated in Section 4.9",
+            "                                          // evaluated post hoc in Section 4.9",
         "                                          // in this study (scope stated in Section 3.1)":
             "                                          // (scope stated in Section 3.1)",
     }
@@ -548,3 +550,149 @@ CODE_AVAILABILITY = (
     "analyses, is available at https://github.com/kes2003/EXPLAINABLE-AI-BASED-INTRUSION-DETECTION-FOR-SMART-GRID-"
     "CYBER-PHYSICAL-SYSTEMS."
 )
+
+
+# --------------------------------------------------------------------------
+# Repeated cross-validation (R4 point 2) -- text driven by the result files
+# --------------------------------------------------------------------------
+def fmt_p(p):
+    return "< 0.001" if p < 0.001 else f"= {p:.3f}"
+
+
+def cv(n):
+    R, T = n["R"], n["T"]
+    s, w, t = R["summary"], R["wilcoxon_vs_best"], T["comparisons"]
+    assert R["best_model"] == "lightgbm" == T["best_model"]
+    ms = lambda m: f"{s[m]['mean']:.4f} ± {s[m]['std']:.4f}"
+    return {
+        "s": s, "w": w, "t": t, "ms": ms,
+        "diff_rf": f"{w['random_forest']['mean_diff']:.4f}",
+        "diff_xgb": f"{w['xgboost']['mean_diff']:.4f}",
+        "diff_cb": f"{w['catboost']['mean_diff']:.3f}",
+        "p_rf": fmt_p(t["random_forest"]["p"]), "p_xgb": fmt_p(t["xgboost"]["p"]),
+        "p_cb": fmt_p(t["catboost"]["p"]),
+        "win_rf": w["random_forest"]["best_wins"], "win_xgb": w["xgboost"]["best_wins"],
+        "p_min_close": min(t["random_forest"]["p"], t["xgboost"]["p"]),
+        "wil_max": max(v["p"] for v in w.values()),
+    }
+
+
+def check_cv_pattern(c):
+    """The prose below states a specific pattern of results; fail loudly if the
+    numbers ever stop matching it rather than printing a wrong sentence."""
+    assert c["wil_max"] < 1e-6, "Wilcoxon no longer significant for all comparisons"
+    assert c["t"]["random_forest"]["p"] >= 0.05 and c["t"]["xgboost"]["p"] >= 0.05
+    assert c["t"]["catboost"]["p"] < 0.001
+    assert abs(float(c["diff_rf"]) - float(c["diff_xgb"])) < 1e-4
+
+
+def abstract_cv_sentence(n):
+    c = cv(n)
+    check_cv_pattern(c)
+    return ("while CatBoost trailed with a Macro-F1 of 0.893 ± 0.005. Repeating the protocol with ten "
+            "fold-assignment seeds (n = 50 paired folds) showed that LightGBM's advantage over Random Forest and "
+            f"XGBoost is consistent but small ({c['diff_rf']} Macro-F1) and not significant once the dependence "
+            f"between cross-validation folds is accounted for (corrected resampled t-test, p ≥ {c['p_min_close']:.2f}), "
+            "whereas CatBoost's deficit is significant (p < 0.001); the three leading models are therefore "
+            "practically equivalent.")
+
+
+def s361(D: Doc, n):
+    c = cv(n)
+    check_cv_pattern(c)
+    anchor = D.para("W is compared against the critical value")
+    h = D.after(anchor, "3.2.1 Primary", "3.6.1 STATISTICAL POWER: REPEATED CROSS-VALIDATION")
+    body = "All four models (Random Forest, XGBoost"
+    p = D.after(h, body,
+        "The n = 5 paired observations underlying Table 3 give limited statistical power to detect small but "
+        "genuine differences between models. We therefore repeated the complete leakage-safe protocol of "
+        "Algorithm 1 -- including fold-local oversampling and scaler fitting -- with 10 independent "
+        "fold-assignment seeds (42-51), yielding 50 paired fold-level Macro-F1 observations per model. Seed 42 is "
+        "the original run and reproduces Tables 2 and 3 exactly. Across the 50 folds, mean Macro-F1 was "
+        f"{c['ms']('lightgbm')} for LightGBM, {c['ms']('random_forest')} for Random Forest, "
+        f"{c['ms']('xgboost')} for XGBoost, and {c['ms']('catboost')} for CatBoost.")
+    p = D.after(p, body,
+        "Fold-level scores from repeated cross-validation are not independent, because the training sets of "
+        "different folds overlap, so tests that treat them as independent -- including the Wilcoxon signed-rank "
+        "test at n = 50 -- overstate significance. Alongside the Wilcoxon test we therefore report the corrected "
+        "resampled t-test of Nadeau and Bengio [42], the standard conservative test for repeated cross-validation, "
+        "which inflates the variance of the J paired differences d by the test-to-training size ratio: "
+        "t = mean(d) / sqrt[(1/J + n_test/n_train) × var(d)], with n_test/n_train = 1/4 for five-fold "
+        "cross-validation and J − 1 = 49 degrees of freedom. Table 3c reports both tests.")
+    rows = [["**Comparison**", "**Mean ΔMacro-F1**", "**Folds won by LightGBM**", "**Wilcoxon W (p)**",
+             "**Corrected t(49) (p)**"]]
+    for m in ("random_forest", "xgboost", "catboost"):
+        w, t = c["w"][m], c["t"][m]
+        rows.append([f"LightGBM vs. {MODEL_NAMES[m]}", f"+{w['mean_diff']:.4f}", f"{w['best_wins']} / {w['n']}",
+                     f"{w['W']:.1f} (p {fmt_p(w['p'])})", f"{t['t']:.2f} (p {fmt_p(t['p'])})"])
+    tbl = clone_table(D.table("Model", ncols=5), p, rows, D.mark)
+    cap = D.after(tbl, "Table 3. Paired Wilcoxon",
+                  "Table 3c. Repeated Stratified Five-Fold Cross-Validation (10 Seeds, n = 50 Paired Folds per "
+                  "Comparison): Paired Wilcoxon Signed-Rank and Corrected Resampled t-Tests")
+    p = D.after(cap, body,
+        "With n = 50, the Wilcoxon test is significant for all three comparisons (p < 0.001). The corrected test "
+        f"confirms that CatBoost is significantly worse than LightGBM (mean difference {c['diff_cb']}, "
+        f"p {c['p_cb']}), but not that LightGBM outperforms Random Forest (p {c['p_rf']}) or XGBoost "
+        f"(p {c['p_xgb']}). LightGBM's advantage over these two models is consistent -- it achieved the higher "
+        f"Macro-F1 in {c['win_rf']} and {c['win_xgb']} of the 50 folds, respectively -- but small ({c['diff_rf']} "
+        "Macro-F1, about a quarter of a percentage point), and it does not survive correction for the dependence "
+        "between folds. We therefore make no claim that LightGBM is superior to Random Forest or XGBoost: the "
+        "three models are practically equivalent on this task, and LightGBM is retained as the default model on "
+        "the basis of its marginally higher mean score rather than a demonstrated statistical advantage.")
+    D.after(p, body,
+        "The repeated analysis covers the tree-ensemble comparison of Tables 2 and 3. It was not extended to the "
+        "deep-learning baselines of Table 3b (Section 4.1) because of their much higher training cost "
+        "(approximately 109 s and 154 s per fold for the CNN-LSTM and Transformer, respectively, versus about 2 s "
+        "for LightGBM); this is noted as a limitation in Section 4.10.")
+
+
+def limitation_cv(n):
+    return ("Fifth, the repeated cross-validation of Section 3.6.1 shows that LightGBM's small advantage over "
+            "Random Forest and XGBoost is consistent across folds but not statistically significant once fold "
+            "dependence is accounted for, so this study does not establish which of the three leading models is "
+            "best. The repeated analysis covered the tree-ensemble comparison only; it was not extended to the "
+            "deep-learning baselines of Table 3b because of their training cost, and nested cross-validation, "
+            "which would additionally capture hyperparameter-selection variance, remains future work.")
+
+
+def conclusion_1(n):
+    c = cv(n)
+    return ("This paper presented an explainable AI-based intrusion detection engine for smart grid cyber-physical "
+            "systems, architected as the core of a broader IDPS whose rule-based prevention/policy-response layer is "
+            "described in Section 3.1 and evaluated post hoc in Section 4.9, and assessed with a level of statistical "
+            "and cross-dataset rigor not typically demonstrated in this literature. Under leakage-safe stratified "
+            "five-fold cross-validation, LightGBM achieved the highest mean performance (Macro-F1 0.928 ± 0.003, "
+            "accuracy 96.7% ± 0.1%). Repeated cross-validation with 50 paired folds showed that its advantage over "
+            f"Random Forest and XGBoost is consistent but small ({c['diff_rf']} Macro-F1) and not significant once "
+            "fold dependence is accounted for, so the three models are best regarded as practically equivalent, "
+            "whereas CatBoost is significantly worse. LightGBM also outperformed compact CNN-LSTM and Transformer "
+            "deep-learning baselines on every fold under an identical protocol, again without reaching statistical "
+            "significance at five folds. A feature-group ablation study identified communication-domain features as "
+            "the single most influential category (0.192 Macro-F1 drop upon removal), ahead of electrical, "
+            "equipment-health, and power-quality features, with this ranking independently corroborated by "
+            "SHAP-based per-class explanations and plausibly underlying part of the cross-dataset performance gap "
+            "(Section 4.6).")
+
+
+# --------------------------------------------------------------------------
+def build(out_path, mark, n):
+    D = Doc(SOURCE, mark)
+    revise_front(D, n)
+    revise_methods(D, n)
+    s361(D, n)
+    revise_results(D, n)
+    revise_back(D, n)
+    D.d.save(str(out_path))
+
+
+def main():
+    n = load_numbers()
+    if n["M"] is None:
+        raise SystemExit("results/msu_shap_multiclass.json is missing -- run scripts/msu_shap_analysis.py first.")
+    build(HERE / "Manuscript_R3_clean.docx", False, n)
+    build(HERE / "Manuscript_R3_highlighted.docx", True, n)
+    print("Saved manuscript/Manuscript_R3_clean.docx and manuscript/Manuscript_R3_highlighted.docx")
+
+
+if __name__ == "__main__":
+    main()

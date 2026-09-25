@@ -212,3 +212,22 @@ if __name__ == "__main__":
     out = HERE / "Response_to_Reviewers_R3.docx"
     build(out)
     print(f"Saved {out}")
+
+
+def response_cv(n):
+    c = bm.cv(n)
+    bm.check_cv_pattern(c)
+    return ("We agree and have strengthened the analysis with repeated cross-validation (new Section 3.6.1 and "
+            "Table 3c). The complete leakage-safe protocol of Algorithm 1 was repeated with 10 independent "
+            "fold-assignment seeds, giving n = 50 paired fold-level observations per comparison instead of 5; the "
+            "first seed is the original run and reproduces Tables 2 and 3 exactly. Because fold scores from "
+            "repeated cross-validation are not independent (training sets overlap), a Wilcoxon test at n = 50 "
+            "overstates significance, so we additionally report the corrected resampled t-test of Nadeau and "
+            "Bengio (new reference 42). The Wilcoxon test is significant for all comparisons (p < 0.001). The "
+            f"corrected test confirms that CatBoost is significantly worse than LightGBM (p {c['p_cb']}), but not "
+            f"that LightGBM outperforms Random Forest (p {c['p_rf']}) or XGBoost (p {c['p_xgb']}): LightGBM wins "
+            f"{c['win_rf']} and {c['win_xgb']} of the 50 folds, but its mean advantage is only {c['diff_rf']} "
+            "Macro-F1. We have therefore moderated the claims throughout: the manuscript now states that LightGBM, "
+            "Random Forest, and XGBoost are practically equivalent on this task, that LightGBM is retained as the "
+            "default model only because of its marginally higher mean score, and that the study does not establish "
+            "which of the three is best (Abstract, Section 3.6.1, Section 4.10, Conclusion).")
