@@ -3,7 +3,7 @@ Build the Revision-3 manuscript (.docx) from the Revision-2 Word file.
 
 Every number introduced in this revision is read from the result files
 produced by the analysis scripts -- none is typed in by hand:
-    results/reviewer_experiments.json  (run_reviewer_experiments.py)
+    results/repeated_cv_and_policy_eval.json  (run_repeated_cv_and_policy_eval.py)
     results/corrected_ttest.json       (scripts/corrected_resampled_ttest.py)
     results/msu_shap_multiclass.json   (scripts/msu_shap_analysis.py)
 
@@ -39,7 +39,7 @@ MODEL_NAMES = {"random_forest": "Random Forest", "xgboost": "XGBoost", "lightgbm
 # Numbers
 # --------------------------------------------------------------------------
 def load_numbers():
-    R = json.loads((RESULTS / "reviewer_experiments.json").read_text())
+    R = json.loads((RESULTS / "repeated_cv_and_policy_eval.json").read_text())
     T = json.loads((RESULTS / "corrected_ttest.json").read_text())
     msu = RESULTS / "msu_shap_multiclass.json"
     M = json.loads(msu.read_text()) if msu.exists() else None
