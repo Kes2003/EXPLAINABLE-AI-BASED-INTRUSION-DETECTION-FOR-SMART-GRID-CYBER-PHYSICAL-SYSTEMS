@@ -25,6 +25,8 @@ from docx import Document
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(HERE))
+sys.path.insert(0, str(ROOT))
+from scripts.msu_shap_analysis import feature_group  # noqa: E402
 from docx_edit import clone_table, insert_after, norm, remove_all_highlights, set_cell, set_text  # noqa: E402
 
 SOURCE = HERE / "source" / "Smart_Grid_IDPS_Manuscript_R2_Final_1.docx"
@@ -277,7 +279,7 @@ def revise_methods(D: Doc, n):
     D.edit("Deployment latency is measured end-to-end",
            ("(Section 4.7).", "(Section 4.8); the policy engine's own latency is measured separately in Section 4.9."))
     D.edit("Software environment:",
-           ("(Section 4.3-4.8)", "(Sections 4.2-4.8)"),
+           ("(Section 4.3-4.8)", "(Sections 4.3-4.6 and 4.8)"),
            ("already noted in Section 4.7 for the latency benchmark.",
             "described in Section 4.8 for the latency benchmark."),
            ("not on the machine used to obtain them.",
@@ -337,7 +339,8 @@ def revise_results(D: Doc, n):
     first, second = text[:cut].rstrip(), text[cut:]
     set_text(p, first, D.mark, old=text)
     gap = D.after(p, "Two findings stand out.", GAP_ANALYSIS)
-    D.after(gap, "Two findings stand out.", second)
+    sec = D.after(gap, "Two findings stand out.", second)
+    set_text(sec, second, D.mark, old=text)  # unchanged text split off -- not a revision
 
     s47(D, n)
 
@@ -672,6 +675,126 @@ def conclusion_1(n):
             "equipment-health, and power-quality features, with this ranking independently corroborated by "
             "SHAP-based per-class explanations and plausibly underlying part of the cross-dataset performance gap "
             "(Section 4.6).")
+
+
+# --------------------------------------------------------------------------
+# MSU/ORNL explainability (R4 point 3) -- text driven by msu_shap_multiclass.json
+# --------------------------------------------------------------------------
+GROUP_LABEL = {
+    "PMU voltage phasors": "Voltage phasor",
+    "PMU current phasors": "Current phasor",
+    "PMU apparent impedance": "Apparent impedance",
+    "PMU frequency / frequency delta": "Frequency / frequency delta",
+    "PMU relay status flags": "Relay status field",
+    "Control-panel / relay log": "Control-panel / relay log",
+    "Snort IDS log": "Snort IDS log",
+}
+
+
+def msu(n):
+    M = n["M"]
+    g = {k: 100 * v for k, v in M["group_share"].items()}
+    cyber = g["Control-panel / relay log"] + g["PMU relay status flags"] + g["Snort IDS log"]
+    top3 = 100 * sum(r["share"] for r in M["ranking"][:3])
+    m = {"M": M, "g": g, "cyber": f"{cyber:.1f}%", "top3": f"{top3:.1f}%",
+         "volt": f"{g['PMU voltage phasors']:.1f}%", "curr": f"{g['PMU current phasors']:.1f}%",
+         "imp": f"{g['PMU apparent impedance']:.1f}%", "freq": f"{g['PMU frequency / frequency delta']:.1f}%",
+         "logs": f"{g['Control-panel / relay log']:.1f}%", "status": f"{g['PMU relay status flags']:.1f}%",
+         "phasors": f"{g['PMU voltage phasors'] + g['PMU current phasors']:.1f}%",
+         "f1": f"{M['macro_f1_mean']:.4f} ± {M['macro_f1_std']:.4f}",
+         "rows": f"{M['shap_rows_explained']:,}", "per_fold": f"{M['shap_rows_explained'] // 5:,}"}
+    # The prose states this specific pattern; fail loudly if the data ever disagree.
+    assert (m["f1"] == "0.8307 ± 0.0022"), "MSU/ORNL run no longer reproduces Table 8"
+    assert g["Snort IDS log"] == 0.0 and cyber < 2.0
+    assert [r["feature"] for r in M["ranking"][:3]] == ["R4-PM2:V", "R1-PM2:V", "R3-PM2:V"]
+    assert M["ranking"][3]["feature"].endswith(":V") and {r["feature"] for r in M["ranking"][4:6]} == {"R1-PA:ZH", "R4-PA:ZH"}
+    return m
+
+
+def abstract_msu_shap_sentence(n):
+    m = msu(n)
+    return ("Extending SHAP explainability to the external dataset showed that its models rely almost entirely on "
+            f"PMU voltage and current measurements ({m['phasors']} of attribution), with relay, control-panel, and "
+            f"Snort log signals contributing {m['cyber']} -- evidence that the communication-domain signal most "
+            "informative on the synthetic data is effectively absent from the real-world dataset.")
+
+
+def conclusion_msu_sentence(n):
+    m = msu(n)
+    return ("Extending SHAP explainability to this dataset (Section 4.7) showed that its models rely almost entirely "
+            f"on PMU voltage and current measurements, with cyber-side log signals contributing only {m['cyber']} of "
+            "the attribution -- consistent with the absence of the communication-domain evidence that is most "
+            "informative in the synthetic data -- and that its channel-level feature schema limits how directly the "
+            "explanations can be used by an operator.")
+
+
+def s47(D: Doc, n):
+    m = msu(n)
+    anchor = D.para("Second, model ranking is not consistent")
+    h = D.after(anchor, "4.6 EXTERNAL VALIDATION", "4.7 EXPLAINABILITY ON THE EXTERNAL MSU/ORNL DATASET")
+    body = "Two findings stand out."
+    p = D.after(h, body,
+        "The explainability and ablation analyses of Sections 4.3 and 4.4 were performed on the synthetic dataset. "
+        "To determine what evidence the external-validation models of Section 4.6 rely on, we extended the SHAP "
+        "analysis to the MSU/ORNL dataset. Two properties of this dataset shape the analysis. First, its 128 "
+        "features are channel-level identifiers -- for example, R1-PM2:V is a voltage-magnitude channel of the PMU "
+        "at relay R1 -- whose physical meaning must be looked up in the dataset documentation [40], rather than "
+        "named domain quantities such as packet_rate or phase_imbalance_percent. Second, with 37 classes, a "
+        "per-class explanation analogous to Fig. 12 would be impractical to present or interpret. We therefore "
+        "report a global ranking by mean |SHAP| (averaged over samples and classes), and aggregate it into seven "
+        "schema groups: voltage phasors, current phasors, apparent impedance, and frequency/frequency delta, each "
+        "measured by four PMUs; relay status fields; control-panel and relay logs; and Snort IDS logs.")
+    p = D.after(p, body,
+        "The analysis uses the 37-class task, the finest-grained label set and the one on which LightGBM performed "
+        "best (Table 8). The MSU/ORNL pipeline of Section 4.6 does not store its fitted models, but it is fully "
+        "deterministic, and re-running its LightGBM configuration on the same five folds reproduced the Table 8 "
+        f"result exactly (Macro-F1 {m['f1']}). Each fold's model was explained with TreeExplainer on "
+        f"{m['per_fold']} randomly sampled rows (seed 42) of its own held-out test fold, {m['rows']} explained "
+        "samples in total. Table 8b lists the ten highest-ranked features.")
+    rows = [["**Rank**", "**Feature**", "**Schema Group**", "**Mean |SHAP|**", "**Share of Total**"]]
+    for r in m["M"]["ranking"][:10]:
+        rows.append([str(r["rank"]), r["feature"], GROUP_LABEL[feature_group(r["feature"])], f"{r['mean_abs_shap']:.3f}",
+                     f"{100 * r['share']:.1f}%"])
+    tbl = clone_table(D.table("Model", ncols=5), p, rows, D.mark)
+    cap = D.after(tbl, "Table 8. External Validation",
+                  "Table 8b. Top-10 Features by Global Mean |SHAP| -- MSU/ORNL Dataset (37-Class, LightGBM, "
+                  "Five-Fold Cross-Validation)")
+    p = D.after(cap, body,
+        f"The ranking is dominated by physical PMU measurements. Voltage phasors account for {m['volt']} of the "
+        f"total mean |SHAP|, current phasors for {m['curr']}, apparent impedance for {m['imp']}, and "
+        f"frequency/frequency delta for {m['freq']}. The three most influential features are the same "
+        f"voltage-magnitude channel (PM2) measured at three of the four PMUs ({m['top3']} of the total "
+        "attribution together), followed by further voltage-magnitude channels, the apparent-impedance angle at "
+        "R1 and R4, and current-magnitude channel PM5. By contrast, the cyber-side columns contribute almost "
+        f"nothing: the binary control-panel and relay log indicators {m['logs']}, the relay status fields "
+        f"{m['status']}, and the Snort IDS log indicators exactly zero -- the model never splits on them.")
+    p = D.after(p, body,
+        "This result bears directly on the performance gap of Section 4.6. On the synthetic dataset, the two "
+        "communication-domain features (packet rate and packet error rate) form the most influential feature "
+        "group (Sections 4.3, 4.4); on MSU/ORNL, the only cyber-side signals available receive "
+        f"{m['cyber']} of the attribution in total, and the model must separate 37 scenarios from electrical "
+        "signatures alone. The SHAP analysis therefore corroborates the fourth explanation offered in Section 4.6: "
+        "the category of evidence that is most informative on the synthetic data is effectively absent from the "
+        "real-world dataset. It also means that the multidomain premise of this work -- that cyber and physical "
+        "evidence are complementary -- could not be exercised on MSU/ORNL, whose attack scenarios are detectable "
+        "almost exclusively through the physical measurements.")
+    D.after(p, body,
+        "Two further implications follow. First, the MSU/ORNL explanations identify which measurement channels "
+        "drive a decision, but because these are channel identifiers rather than engineered quantities, turning "
+        "them into an operator-facing statement (which relay, which quantity, which physical event) requires the "
+        "dataset documentation and power-system expertise: explainability is only as actionable as the underlying "
+        "feature schema. Second, this analysis is global; per-class explanations for the 37 scenarios, a stability "
+        "check analogous to Section 4.3, and a feature-group ablation on MSU/ORNL were not performed, and are "
+        "noted as limitations in Section 4.10.")
+
+
+LIMITATION_XAI = (
+    "Fourth, the SHAP analysis of the MSU/ORNL dataset (Section 4.7) is global rather than per-class, is based on "
+    "a random sample of held-out rows, and was not accompanied by a stability check or a feature-group ablation "
+    "on that dataset. It also exposed a schema-driven limit on explainability: MSU/ORNL's channel-level features "
+    "are much less directly interpretable to a grid operator than the synthetic dataset's named domain "
+    "quantities, independent of any modeling choice."
+)
 
 
 # --------------------------------------------------------------------------

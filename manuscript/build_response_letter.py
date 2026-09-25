@@ -208,12 +208,6 @@ def bm_parse(text):
     return parse_md(text)
 
 
-if __name__ == "__main__":
-    out = HERE / "Response_to_Reviewers_R3.docx"
-    build(out)
-    print(f"Saved {out}")
-
-
 def response_cv(n):
     c = bm.cv(n)
     bm.check_cv_pattern(c)
@@ -252,3 +246,40 @@ def summary_items(n):
         "Also added: the environment used for the new analyses (Section 3.9), a Code Availability statement, and "
         "one new reference [42].",
     ]
+
+
+def gap_xai_link(n):
+    m = bm.msu(n)
+    return ("The new SHAP analysis of Section 4.7 corroborates the fourth cause directly: on MSU/ORNL the "
+            f"relay, control-panel, and Snort log signals together receive only {m['cyber']} of the attribution, "
+            "whereas communication features are the most influential group on the synthetic data. ")
+
+
+def response_xai(n):
+    m = bm.msu(n)
+    return ("We agree that the explainability analysis should not be limited to the synthetic dataset, and we "
+            "have performed it on MSU/ORNL (new Section 4.7 and Table 8b). The external-validation pipeline "
+            "(Section 4.6) does not store its fitted models, but it is deterministic; re-running its LightGBM "
+            f"configuration on the same five folds reproduced the Table 8 result exactly (Macro-F1 {m['f1']}), "
+            "and each fold's model was then explained with SHAP TreeExplainer on its own held-out test fold "
+            f"({m['rows']} explained samples in total). The analysis is reported as a global ranking, aggregated "
+            "into seven schema groups, because the dataset's 37 classes make a per-class figure impractical and "
+            "its 128 features are channel identifiers rather than named domain quantities. The results are "
+            f"informative: PMU voltage and current phasors account for {m['phasors']} of the attribution, apparent "
+            f"impedance for {m['imp']}, and frequency for {m['freq']}, while the relay, control-panel, and Snort "
+            f"log signals together account for only {m['cyber']} (the Snort indicators receive none at all). This "
+            "corroborates one of the causes of the synthetic/real performance gap -- the communication-domain "
+            "evidence that is most informative on the synthetic data is effectively absent from MSU/ORNL -- and "
+            "shows that the multidomain premise of our approach could not be exercised on that dataset. We discuss "
+            "the implications in Section 4.7: the explanations identify which measurement channels drive a "
+            "decision, but turning them into operator-facing statements requires the dataset documentation and "
+            "domain expertise, so explainability is only as actionable as the feature schema. Section 4.10 lists "
+            "the remaining limitations (global rather than per-class explanations, a sampled explanation set, and "
+            "no stability check or ablation on MSU/ORNL). As the reviewer notes, a feature-group ablation on "
+            "MSU/ORNL would complement this analysis; we identify it as future work.")
+
+
+if __name__ == "__main__":
+    out = HERE / "Response_to_Reviewers_R3.docx"
+    build(out)
+    print(f"Saved {out}")

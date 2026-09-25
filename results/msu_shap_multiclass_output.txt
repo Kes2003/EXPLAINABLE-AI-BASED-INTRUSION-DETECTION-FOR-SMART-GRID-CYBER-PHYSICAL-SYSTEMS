@@ -1,0 +1,38 @@
+Found 15 file(s) in /home/user/EXPLAINABLE-AI-BASED-INTRUSION-DETECTION-FOR-SMART-GRID-CYBER-PHYSICAL-SYSTEMS/data/external/msu_ics_power/multiclass: 15 .arff, 0 .csv
+Combined shape: (78377, 129)
+n = 78,377, features = 128, classes = 37
+fold 1: Macro-F1 = 0.8284, SHAP rows = 2000
+fold 2: Macro-F1 = 0.8317, SHAP rows = 2000
+fold 3: Macro-F1 = 0.8344, SHAP rows = 2000
+fold 4: Macro-F1 = 0.8292, SHAP rows = 2000
+fold 5: Macro-F1 = 0.8296, SHAP rows = 2000
+
+Reproduction check vs. Table 8 (37-class LightGBM 0.8307 +/- 0.0022): 0.8307 +/- 0.0022
+
+Top 15 features by mean |SHAP|:
+   1. R4-PM2:V                     1.0371  (13.9%)
+   2. R1-PM2:V                     0.6292  (8.4%)
+   3. R3-PM2:V                     0.4034  (5.4%)
+   4. R2-PM3:V                     0.2700  (3.6%)
+   5. R1-PA:ZH                     0.2214  (3.0%)
+   6. R4-PA:ZH                     0.1788  (2.4%)
+   7. R1-PM1:V                     0.1715  (2.3%)
+   8. R2-PM5:I                     0.1572  (2.1%)
+   9. R3-PM5:I                     0.1492  (2.0%)
+  10. R1-PM5:I                     0.1353  (1.8%)
+  11. R4-PM5:I                     0.1079  (1.4%)
+  12. R1-PM3:V                     0.1035  (1.4%)
+  13. R1-PA3:VH                    0.1019  (1.4%)
+  14. R2-PA5:IH                    0.1015  (1.4%)
+  15. R4:F                         0.0984  (1.3%)
+
+Share of total mean |SHAP| by schema group:
+  PMU voltage phasors          54.6%
+  PMU current phasors          30.5%
+  PMU apparent impedance       10.1%
+  PMU frequency / frequency delta 3.5%
+  Control-panel / relay log    0.8%
+  PMU relay status flags       0.5%
+  Snort IDS log                0.0%
+
+Saved results/msu_shap_multiclass.json
