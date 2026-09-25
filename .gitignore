@@ -79,3 +79,6 @@ test_outputs/
 
 # CatBoost training scratch output
 catboost_info/
+
+# Public MSU/ORNL dataset (download per scripts/msu_ics_dataset_eval.py)
+data/external/msu_ics_power/

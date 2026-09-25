@@ -231,3 +231,24 @@ def response_cv(n):
             "Random Forest, and XGBoost are practically equivalent on this task, that LightGBM is retained as the "
             "default model only because of its marginally higher mean score, and that the study does not establish "
             "which of the three is best (Abstract, Section 3.6.1, Section 4.10, Conclusion).")
+
+
+def summary_items(n):
+    c = bm.cv(n)
+    return [
+        f"New Section 4.9 and Table 10: quantitative evaluation of the prevention/policy layer (response accuracy "
+        f"{n['resp_acc']}, false-block rate {n['fbr']}, missed-response rate {n['missed_rate']}, policy latency "
+        f"{n['lat_mean']} μs per decision).",
+        "New Section 3.6.1 and Table 3c: repeated cross-validation (10 seeds, n = 50 paired folds) with Wilcoxon "
+        "and corrected resampled t-tests; the claims of model superiority have been moderated accordingly.",
+        "New Section 4.7 and Table 8b: SHAP explainability on the external MSU/ORNL dataset, with a discussion of "
+        "its implications and limits.",
+        "Section 4.6: new analysis of the causes of the synthetic/MSU-ORNL performance gap; Section 4.10: explicit "
+        "limits on transferability to operational networks.",
+        "Section 4.10: a concrete, testable design for detecting and mitigating sensor drift and distribution shift.",
+        "New Section 1.1 and revised Table 1: explicit statement of the specific contribution and how it differs "
+        "from prior smart-grid IDPS work.",
+        "Abstract, contributions list, and Conclusion: deployment and prevention claims aligned with the evidence.",
+        "Also added: the environment used for the new analyses (Section 3.9), a Code Availability statement, and "
+        "one new reference [42].",
+    ]

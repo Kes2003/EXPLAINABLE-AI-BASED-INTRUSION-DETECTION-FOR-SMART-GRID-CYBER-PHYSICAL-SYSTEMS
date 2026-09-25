@@ -11,7 +11,7 @@ and first checks that it reproduces the Table 8 Macro-F1 (37-class LightGBM:
 0.8307 +/- 0.0022). Only then are the fold models explained with
 shap.TreeExplainer on their own held-out test fold.
 
-To bound run time, SHAP values are computed on a stratified random sample of
+To bound run time, SHAP values are computed on a seeded random sample of
 each held-out test fold (--shap_per_fold rows, seed 42).
 
 Usage:
@@ -57,21 +57,25 @@ def clean(df, label_col):
 
 
 def feature_group(name):
-    """Coarse schema group from the MSU/ORNL column naming (see dataset README)."""
-    n = name.lower()
-    if "snort" in n:
+    """Schema group from the MSU/ORNL column naming. Per PMU (R1-R4): PA1-PA12
+    phasor angles and PM1-PM12 magnitudes (suffix V/VH = voltage, I/IH =
+    current), F = frequency, DF = frequency delta, PA:Z / PA:ZH = apparent
+    impedance and its angle, S = relay status flags; plus 12 log columns."""
+    if name.startswith("snort_log"):
         return "Snort IDS log"
-    if "control_panel" in n or "relay" in n and "log" in n:
-        return "Relay / control-panel log"
-    if re.search(r":s$|status", n):
-        return "Relay status flag"
-    if re.search(r"-pa\d", n) or n.endswith(":pa"):
-        return "PMU phase angle"
-    if re.search(r"-pm\d", n) or ":z" in n:
-        return "PMU magnitude / impedance"
-    if n.endswith(":f") or n.endswith(":df"):
-        return "PMU frequency / ROCOF"
-    return "Other"
+    if name.startswith(("control_panel_log", "relay")):
+        return "Control-panel / relay log"
+    if name.endswith(":S"):
+        return "PMU relay status flags"
+    if name.endswith((":F", ":DF")):
+        return "PMU frequency / frequency delta"
+    if name.endswith((":Z", ":ZH")):
+        return "PMU apparent impedance"
+    if re.search(r"-P[AM]\d+:(V|VH)$", name):
+        return "PMU voltage phasors"
+    if re.search(r"-P[AM]\d+:(I|IH)$", name):
+        return "PMU current phasors"
+    raise ValueError(f"unrecognized MSU/ORNL column: {name}")
 
 
 def main():
