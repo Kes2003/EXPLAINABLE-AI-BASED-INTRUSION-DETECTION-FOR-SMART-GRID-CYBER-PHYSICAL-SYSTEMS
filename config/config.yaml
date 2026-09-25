@@ -42,6 +42,22 @@ model:
     n_jobs: -1
     random_state: 42
 
+# Alternate model configs used by scripts/compare_models.py and
+# scripts/statistical_significance.py (Reviewer 2 / Reviewer 4 baseline request)
+model_variants:
+  random_forest:
+    type: random_forest
+    params: {n_estimators: 200, max_depth: 20, n_jobs: -1, random_state: 42}
+  xgboost:
+    type: xgboost
+    params: {n_estimators: 200, max_depth: 8, learning_rate: 0.1, n_jobs: -1, random_state: 42}
+  lightgbm:
+    type: lightgbm
+    params: {n_estimators: 200, max_depth: -1, learning_rate: 0.1, num_leaves: 31, n_jobs: -1, random_state: 42}
+  catboost:
+    type: catboost
+    params: {iterations: 200, depth: 8, learning_rate: 0.1, random_state: 42, verbose: false}
+
 # Training configuration
 train:
   test_size: 0.2  # 20% of data for testing
