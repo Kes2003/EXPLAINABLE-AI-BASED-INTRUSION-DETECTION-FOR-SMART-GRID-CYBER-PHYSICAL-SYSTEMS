@@ -76,3 +76,6 @@ Thumbs.db
 test_outputs/
 *.test.csv
 
+
+# CatBoost training scratch output
+catboost_info/
