@@ -1,0 +1,183 @@
+[
+ [
+  "Table 2",
+  "XGBoost",
+  1,
+  "0.9266 ± 0.0042",
+  "0.9276 ± 0.0030"
+ ],
+ [
+  "Table 2",
+  "XGBoost",
+  2,
+  "96.62% ± 0.15%",
+  "96.66% ± 0.11%"
+ ],
+ [
+  "Table 2",
+  "XGBoost",
+  3,
+  "0.9405 ± 0.0052",
+  "0.9408 ± 0.0040"
+ ],
+ [
+  "Table 2",
+  "XGBoost",
+  4,
+  "0.9139 ± 0.0079",
+  "0.9155 ± 0.0067"
+ ],
+ [
+  "Table 3",
+  "LightGBM vs. XGBoost",
+  1,
+  "1.0",
+  "3.0"
+ ],
+ [
+  "Table 3",
+  "LightGBM vs. XGBoost",
+  2,
+  "0.125",
+  "0.3125"
+ ],
+ [
+  "Section 3.6.1 text",
+  "0.9275 ± 0.0046 for XGBoost",
+  "0.9283 ± 0.0045 for XGBoost"
+ ],
+ [
+  "Section 3.6.1 text",
+  "XGBoost (p = 0.093)",
+  "XGBoost (p = 0.185)"
+ ],
+ [
+  "Section 3.6.1 text",
+  "in 40 and 41 of the 50 folds",
+  "in 40 and 38 of the 50 folds"
+ ],
+ [
+  "Section 3.6.1 text",
+  "small (0.0024 Macro-F1, about a quarter of a percentage point)",
+  "small (0.0024 and 0.0016 Macro-F1, or 0.24 and 0.16 percentage points)"
+ ],
+ [
+  "Table 3c",
+  "LightGBM vs. XGBoost",
+  1,
+  "+0.0024",
+  "+0.0016"
+ ],
+ [
+  "Table 3c",
+  "LightGBM vs. XGBoost",
+  2,
+  "41 / 50",
+  "38 / 50"
+ ],
+ [
+  "Table 3c",
+  "LightGBM vs. XGBoost",
+  3,
+  "145.0 (p < 0.001)",
+  "199.0 (p < 0.001)"
+ ],
+ [
+  "Table 3c",
+  "LightGBM vs. XGBoost",
+  4,
+  "1.72 (p = 0.093)",
+  "1.34 (p = 0.185)"
+ ],
+ [
+  "Table 8",
+  "37-class / Random Forest",
+  2,
+  "0.7952 ± 0.0028",
+  "0.7953 ± 0.0026"
+ ],
+ [
+  "Table 8",
+  "37-class / Random Forest",
+  3,
+  "81.0% ± 0.2%",
+  "81.1% ± 0.2%"
+ ],
+ [
+  "Table 8",
+  "37-class / XGBoost",
+  2,
+  "0.8012 ± 0.0028",
+  "0.8002 ± 0.0047"
+ ],
+ [
+  "Table 8",
+  "37-class / XGBoost",
+  3,
+  "81.8% ± 0.3%",
+  "81.7% ± 0.5%"
+ ],
+ [
+  "Table 8",
+  "3-class / Random Forest",
+  2,
+  "0.8512 ± 0.0042",
+  "0.8511 ± 0.0042"
+ ],
+ [
+  "Table 8",
+  "3-class / XGBoost",
+  2,
+  "0.8358 ± 0.0033",
+  "0.8349 ± 0.0013"
+ ],
+ [
+  "Table 8",
+  "Binary / Random Forest",
+  2,
+  "0.8608 ± 0.0022",
+  "0.8612 ± 0.0031"
+ ],
+ [
+  "Table 8",
+  "Binary / XGBoost",
+  2,
+  "0.8114 ± 0.0065",
+  "0.8116 ± 0.0035"
+ ],
+ [
+  "Table 9",
+  "Measuring hardware",
+  1,
+  "AMD64, 6 physical / 12 logical cores, 7.3 GB RAM, Windows 10",
+  "Intel(R) Xeon(R) Processor @ 2.80GHz, 4 physical / 4 logical cores, 15.7 GB RAM, Linux"
+ ],
+ [
+  "Table 9",
+  "Single-sample latency (mean)",
+  1,
+  "1.70 ms",
+  "1.44 ms"
+ ],
+ [
+  "Table 9",
+  "Single-sample latency (p99)",
+  1,
+  "2.70 ms",
+  "2.03 ms"
+ ],
+ [
+  "Table 9",
+  "Throughput @ batch = 1",
+  1,
+  "610 samples/sec",
+  "680 samples/sec"
+ ],
+ [
+  "Table 9",
+  "Throughput @ batch = 512",
+  1,
+  "46,336 samples/sec",
+  "19,442 samples/sec"
+ ]
+]

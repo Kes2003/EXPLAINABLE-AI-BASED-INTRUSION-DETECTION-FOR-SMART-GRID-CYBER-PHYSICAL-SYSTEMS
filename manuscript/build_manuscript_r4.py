@@ -183,6 +183,7 @@ def load():
         "msu_shap": J(R / "msu_shap_multiclass.json"),
         "msu_abl": J(R / "msu_ablation_multiclass.json"),
         "auc": J(ROOT / "artifacts" / "roc_auc_scores.json"),
+        "pol": J(R4 / "policy_latency.json"),
     }
     return n
 
@@ -232,8 +233,8 @@ def c1(D: Doc, n):
             "To assess whether the proposed methodology carries over to independently collected data, the same "
             "modeling pipeline is additionally retrained and evaluated on"),
            ("a substantially stronger and different claim that is not made in this study.",
-            "a substantially stronger and different claim. Because the reviewers asked whether such transfer holds, "
-            "we also tested it directly (Section 4.6.1): applied to MSU/ORNL without retraining, the "
+            "a substantially stronger and different claim. We nevertheless tested this stronger claim directly "
+            "(Section 4.6.1): applied to MSU/ORNL without retraining, the "
             "synthetic-trained model performed at chance level. The study therefore makes no claim of model "
             "transferability; all MSU/ORNL results other than those of Section 4.6.1 come from models retrained on "
             "MSU/ORNL data."))
@@ -332,7 +333,7 @@ def c3(D: Doc, n):
     D.edit("Evaluation protocol and metrics.",
            ("Response accuracy is the fraction of samples whose selected action exactly matches the ground-truth "
             "action",
-            "Action-selection accuracy (termed response accuracy in the previous version) is the fraction of samples "
+            "Action-selection accuracy is the fraction of samples "
             "whose selected action exactly matches the ground-truth action"))
     D.edit("Response accuracy and false-block rate.",
            ("**Response accuracy and false-block rate.**", "**Action-selection accuracy and false-block rate.**"),
@@ -454,8 +455,7 @@ def c2(D: Doc, n):
     h = D.after("The model degrades gracefully under Gaussian sensor noise", "3.6.1 STATISTICAL POWER",
                 "4.5.1 DRIFT DETECTION AND MITIGATION EXPERIMENT")
     p = D.after(h, "Two findings stand out.",
-                "The monitoring and shadow-retraining design proposed in the previous version was implemented and "
-                "evaluated with the deployed model, test split, and shift operator of Table 7 (every feature x is "
+                "The drift-monitoring and shadow-retraining strategy was implemented and evaluated with the deployed model, test split, and shift operator of Table 7 (every feature x is "
                 "replaced by x + s·mean(x)), adding the smaller shifts s = 1% and 2%. The 6,000-row test split was "
                 "divided into a 'recent' slice (2,000 rows), a validation slice (1,000 rows), and an evaluation slice "
                 "(3,000 rows). Detection is label-free: a reference window of "
@@ -549,18 +549,23 @@ def env_sentence(n):
 
 def c10(D: Doc, n, repro):
     e = n["env"]
+    D.edit("The code used to generate all results reported in this study",
+           ("and prevention-layer analyses, is available at",
+            "and prevention-layer analyses, as well as the drift, transfer, event-disjoint, faithfulness, "
+            "data-complexity, and threshold analyses, is available at"),
+           ("CYBER-PHYSICAL-SYSTEMS.",
+            "CYBER-PHYSICAL-SYSTEMS. The repository provides the package lock file of the computational environment "
+            "(environment/requirements-lock.txt), a single script that regenerates every table and figure "
+            "(reproduce_all.sh), and a file that maps each reported result to the command and result file that "
+            "produced it (manuscript/PROVENANCE_R4.md)."))
     D.replace("Software environment:",
-              "Software environment: every result reported in this version -- including all values carried over from "
-              "the previous versions -- was regenerated in a single computational environment: "
+              "Software environment: every result reported in this study was generated in a single computational "
+              "environment: "
               f"{env_sentence(n)}, on Linux ({e['platform']}) with a {e['physical_cpus']}-core "
               f"{e['cpu_model']} CPU and {e['ram_gb']:.0f} GB RAM. The complete package list is provided as a lock "
               "file (environment/requirements-lock.txt) in the code repository, and a single script "
-              "(reproduce_all.sh) regenerates every table and figure. Earlier versions of this manuscript reported "
-              "results produced in two different environments (Python 3.12 with scikit-learn 1.8, XGBoost 3.4, SHAP "
-              "0.52 on a Windows machine, and Python 3.11 with scikit-learn 1.9, XGBoost 3.2, SHAP 0.51 and SciPy 1.17 "
-              "on a Linux machine). Re-running the whole pipeline in the final environment " + repro + " The latency "
-              "benchmark of Section 4.8 depends on hardware and was therefore re-measured on the machine above; the "
-              "previous measurement on a Windows workstation is no longer reported.")
+              "(reproduce_all.sh) regenerates every table and figure. The latency benchmarks of Sections 4.8 and 4.9 "
+              "depend on hardware and were measured on the machine above.")
 
 
 def c9(D: Doc, n):
@@ -580,8 +585,8 @@ def c9(D: Doc, n):
             "(same folds, same fold-local oversampling, same scaler-fit-on-train-only discipline). Inside every "
             "outer training fold, 10% of the rows (stratified) were set aside before oversampling as a validation "
             "set for early stopping, so the outer test fold was never used for training, early stopping, or model "
-            "selection. The baselines were re-implemented for this version with a fully documented configuration "
-            "(Table 3d) and re-run; Table 3b reports the new results, which replace those of the previous version."))
+            "selection. The complete configuration of both networks is given in Table 3d, and Table 3b reports the "
+            "results."))
     rows = [["Item", "CNN-LSTM", "Transformer encoder"],
             ["Input", "18 standardized features as a length-18 sequence, 1 channel",
              "18 standardized features as a length-18 sequence, 1 channel"],
@@ -766,8 +771,8 @@ def c5_text(D: Doc, n, cap, c):
                 "event. Under random row-level splitting, therefore, most test rows have a near-copy from the same "
                 "event in the training fold, and Table 8 measures largely the recognition of a known event rather than "
                 "the detection of a new one. The event-disjoint values of Table 8e are the appropriate estimate of "
-                "performance on unseen events, and they replace the Table 8 values wherever the previous version used "
-                "the latter as an estimate of real-world performance. They also show that, in this dataset, a single "
+                "performance on unseen events, and they, not the Table 8 values, are used in this paper as the estimate "
+                "of real-world performance. They also show that, in this dataset, a single "
                 "row of PMU and log features carries little information about which of the 37 scenarios is "
                 "executing; event-level features computed over windows of consecutive rows, which this study does "
                 "not use, are the obvious next step. The synthetic dataset is not affected by this issue, because its "
@@ -786,8 +791,7 @@ def section46_edits(D: Doc, n, c5):
             f"Macro-F1 is {f3(ev)}."))
     D.edit("Several converging factors plausibly explain this gap.",
            ("Several converging factors plausibly explain this gap.",
-            "The previous version proposed several converging factors to explain this gap; Section 4.6.3 now tests "
-            "them experimentally."),
+            "Several converging factors plausibly explain this gap; Section 4.6.3 tests them experimentally."),
            ("we regard the 83.1% MSU/ORNL Macro-F1, rather than the 92.8% synthetic figure, as the more representative "
             "estimate of performance on real grid telemetry, and we make no claim that a model trained on the synthetic "
             "dataset would transfer directly to a real substation without retraining on local data (Section 4.10).",
@@ -1033,6 +1037,11 @@ def c8(D: Doc, n, anchor, c5):
 def limitations(D: Doc, n, c5):
     S = n["single"]["summary"]
     ev37 = max(c5["v"]["multiclass"][m]["B"] for m in ("lightgbm", "random_forest"))
+    D.edit("Two further implications follow.",
+           ("per-class explanations for the 37 scenarios, a stability check analogous to Section 4.3 were not performed "
+            "on MSU/ORNL, and are noted",
+            "per-class explanations for the 37 scenarios and a stability check analogous to Section 4.3 were not "
+            "performed on MSU/ORNL (its faithfulness was tested, Section 4.3.1) and are noted"))
     D.edit("Several limitations should be considered when interpreting these results.",
            ("The substantially lower performance on the real MSU/ORNL dataset (Sections 4.6, 4.7) should be treated as "
             "the more representative estimate of real-world performance.",
@@ -1081,8 +1090,9 @@ def c9_finish(D: Doc, n, spec_rows, tb):
     assert lg["macro_f1_mean"] > max(cl["macro_f1_mean"], tr["macro_f1_mean"])
     t2 = n["cv"]
     rows = [["Model", "Macro-F1 (mean ± std)", "Accuracy (mean ± std)", "Mean train time / fold"]]
-    rows.append(["LightGBM (Table 2; full training fold)", f"{f3(t2['lightgbm']['macro_f1_mean'])} ± "
-                 f"{f3(t2['lightgbm']['macro_f1_std'])}", "--", "--"])
+    rows.append(["LightGBM (Table 2; full training fold)", f"{f3(t2['lightgbm']['f1'][0])} ± "
+                 f"{f3(t2['lightgbm']['f1'][1])}", f"{pct(t2['lightgbm']['acc'][0])} ± {pct(t2['lightgbm']['acc'][1])}",
+                 "--"])
     for name, r in (("LightGBM (same 90% training part as the networks)", lg), ("CNN-LSTM", cl),
                     ("Transformer encoder", tr)):
         rows.append([name, f"{f3(r['macro_f1_mean'])} ± {f3(r['macro_f1_std'])}",
@@ -1104,10 +1114,7 @@ def c9_finish(D: Doc, n, spec_rows, tb):
               f"(paired Wilcoxon signed-rank test, p = {wc['p']:.4f} and p = {wt['p']:.4f}). With n = 5 paired folds, "
               "p = 0.0625 is the smallest attainable p-value, so a consistent directional advantage cannot be confirmed "
               "at α = 0.05 -- the same statistical-power caveat that applies to Table 3; because of the training cost of "
-              "the networks, this comparison was not extended to repeated cross-validation. Compared with the previous "
-              "version, whose CNN-LSTM and Transformer were stopped on the training loss after at most 15 epochs, the "
-              "fully specified networks of Table 3d use a validation set for early stopping and a selected learning "
-              "rate and width, and Table 3b replaces the earlier values. The conclusion is unchanged: on 18 tabular "
+              "the networks, this comparison was not extended to repeated cross-validation. On 18 tabular "
               "features and about 30,000 rows, gradient-boosted trees remain at least as accurate as these deep "
               "architectures, consistent with the broader empirical finding for small-to-medium tabular data.")
     D.replace_image("Fig. 9b. Macro-F1 of tree-ensemble vs. deep-learning models", FIG / "dl_baselines.png")
@@ -1137,7 +1144,8 @@ def sync_cells(D: Doc, caption, cells, changes):
     for (label, col), text in cells.items():
         labels = label if isinstance(label, tuple) else (label,)
         row = [r for r in t.rows
-               if all(norm(r.cells[i].text).startswith(norm(lb)) for i, lb in enumerate(labels))]
+               if all(norm(r.cells[i].text) == norm(lb) or (len(lb) > 3 and norm(r.cells[i].text).startswith(norm(lb)))
+                      for i, lb in enumerate(labels))]
         assert len(row) == 1, (caption, label)
         cell = row[0].cells[col]
         if norm(cell.text) != norm(text):
@@ -1193,13 +1201,17 @@ def sync_section361(D: Doc, n, changes):
                ("0.8947 ± 0.0047 for CatBoost", f"{pm4(S['catboost']['mean'], S['catboost']['std'])} for CatBoost")])
     changes += [("Section 3.6.1 text", o, nw) for o, nw in sw]
     d_rf, d_xg = W["random_forest"]["mean_diff"], W["xgboost"]["mean_diff"]
-    small = f"{d_rf:.4f}" if f"{d_rf:.4f}" == f"{d_xg:.4f}" else f"{d_rf:.4f} and {d_xg:.4f}"
+    if f"{d_rf:.4f}" == f"{d_xg:.4f}":
+        small = f"{d_rf:.4f} Macro-F1, or {d_rf * 100:.2f} percentage points)"
+    else:
+        small = (f"{d_rf:.4f} and {d_xg:.4f} Macro-F1, or {d_rf * 100:.2f} and {d_xg * 100:.2f} "
+                 f"percentage points)")
     sw = swap(D, "With n = 50, the Wilcoxon test is significant",
               [("(mean difference 0.035, p < 0.001)", f"(mean difference {W['catboost']['mean_diff']:.3f}, {p3(tt['catboost']['p'])})"),
                ("Random Forest (p = 0.105)", f"Random Forest ({p3(tt['random_forest']['p'])})"),
                ("XGBoost (p = 0.093)", f"XGBoost ({p3(tt['xgboost']['p'])})"),
                ("in 40 and 41 of the 50 folds", f"in {W['random_forest']['best_wins']} and {W['xgboost']['best_wins']} of the 50 folds"),
-               ("small (0.0024 Macro-F1", f"small ({small} Macro-F1")])
+               ("small (0.0024 Macro-F1, about a quarter of a percentage point)", f"small ({small}")])
     changes += [("Section 3.6.1 text", o, nw) for o, nw in sw]
     cells = {}
     for k in ("random_forest", "xgboost", "catboost"):
@@ -1239,6 +1251,7 @@ def response_sections(n):
     n250 = [next(x for x in r["M2_shadow"] if x["n_labelled"] == 250)["active_model_eval_f1"] for r in m]
     g = d["no_drift_guard"]
     S1 = n["single"]["summary"]
+    ll05 = next(r for r in n["single"]["rows"] if r["feature"] == "line_load_percent" and r["k_sigma"] == 0.05)
     c5 = c5_numbers(n)
     v = c5["v"]
     nn = n["gap"]["msu_nn_events_37class"]
@@ -1286,7 +1299,7 @@ def response_sections(n):
         "and all prevention claims are limited to offline action selection.",
         "New Section 4.9.1, Table 10b and Fig. 16: τ sweep, calibration (ECE, Brier score) and nested data-driven "
         "selection of τ.",
-        f"New Section 4.6.2 and Table 8e: event-disjoint and time-disjoint validation on MSU/ORNL (37-class Macro-F1 "
+        f"New Section 4.6.2 and Table 8e: event-disjoint and time-disjoint validation on MSU/ORNL (best 37-class Macro-F1 "
         f"{f3(best(v['multiclass'], 'B'))} instead of {f3(best(v['multiclass'], 'A'))}); the event-disjoint values are "
         "now the reported estimate for unseen events.",
         "Rewritten Section 1.1: the specific novelty, and what the paper does not claim.",
@@ -1307,11 +1320,13 @@ def response_sections(n):
     P_("**Response:** We thank the reviewer for pressing these points. Each is answered below with a new experiment, "
        "or, where that was impossible, with an explicit narrowing of the claim.")
 
-    def comment(i, resp, changes):
+    def comment(i, resp, changes, bullets=()):
         P_(f"**Comment {i}**")
         P_(f"*\"{COMMENTS[i - 1]}\"*")
         for j, r in enumerate(resp):
             P_(("**Response:** " if j == 0 else "") + r)
+        for b in bullets:
+            B_(b)
         P_("**Changes in the manuscript:** " + changes)
         blank()
 
@@ -1332,7 +1347,7 @@ def response_sections(n):
         "cross-domain generalisation or model transferability. The manuscript now states that the evidence supports "
         "methodology-level external validity (the same pipeline, retrained, works on real PMU data) but not "
         "transferability of a trained model."],
-        "Section 3.2.2; new Section 4.6.1 and Table 8d; Section 4.6 (fourth paragraph); Section 1.1; contributions "
+        "Section 3.2.2; new Section 4.6.1 and Table 8d; Section 4.6 (discussion of the performance gap); Section 1.1; contributions "
         "list; Abstract; Section 4.10 (first limitation); Conclusion.")
 
     comment(2, [
@@ -1353,7 +1368,8 @@ def response_sections(n):
         "We also report the limit of the method rather than only its successes. When a single sensor drifts by k standard "
         f"deviations, KS detection falls to {pct(S1['0.25']['ks_detection_rate_mean'])} of windows at k = 0.25 and "
         f"{pct(S1['0.1']['ks_detection_rate_mean'])} at k = 0.1. Most such small drifts are harmless, but a 0.05 "
-        "standard-deviation offset of line load was almost never detected and still reduced Macro-F1 noticeably. These "
+        f"standard-deviation offset of line load was detected in only {pct(ll05['ks_detection_rate'])} of windows and "
+        f"still reduced Macro-F1 by {f3(ll05['macro_f1_drop'])}. These "
         "experiments use simulated drift on synthetic data; drift in field data remains to be tested, as stated in "
         "Section 4.10."],
         "New Section 4.5.1, Table 7b and Fig. 14b; Section 4.5 (last paragraph); Section 4.10 (second limitation, "
@@ -1400,7 +1416,8 @@ def response_sections(n):
         "protocols. The first is event-disjoint five-fold cross-validation, which holds out complete recordings, so "
         "every test event is unseen. The second is time-disjoint: within every event, the model trains on the first "
         "80% of rows and is tested on the last 15%, after a 5% gap.",
-        f"The results change substantially (Table 8e). The 37-class Macro-F1 falls from {f3(best(v['multiclass'], 'A'))} "
+        f"The results change substantially (Table 8e). Taking the better of LightGBM and Random Forest in each case, the 37-class Macro-F1 "
+        f"falls from {f3(best(v['multiclass'], 'A'))} "
         f"to {f3(best(v['multiclass'], 'B'))} (event-disjoint) and {f3(best(v['multiclass'], 'C'))} (time-disjoint). "
         f"The 3-class task falls from {f3(best(v['triple'], 'A'))} to {f3(best(v['triple'], 'B'))}, and the binary task "
         f"from {f3(best(v['binary'], 'A'))} to {f3(best(v['binary'], 'B'))}. The cause is near-duplicate neighbouring "
@@ -1462,8 +1479,11 @@ def response_sections(n):
         f"{f3(G['msu_37class']['complexity']['N1_boundary_fraction'])}. A logistic regression already reaches "
         f"{f3(cap('synthetic_5class', 'logistic_regression'))} on the synthetic data but "
         f"{f3(cap('msu_37class', 'logistic_regression'))} on MSU/ORNL. The gap remains when label granularity, sample "
-        f"size and feature count are matched: on the binary task the scores are {f3(cap('synthetic_binary', 'lightgbm'))} "
-        f"vs. {f3(cap('msu_binary', 'lightgbm'))}, and with 30,000 rows or 18 features the MSU/ORNL score does not rise.",
+        f"size and feature count are matched: on the binary task LightGBM scores {f3(cap('synthetic_binary', 'lightgbm'))} "
+        f"vs. {f3(cap('msu_binary', 'lightgbm'))} (Random Forest, the best MSU/ORNL binary model: "
+        f"{f3(n['msu']['binary']['summary']['random_forest']['macro_f1_mean'])}), and the MSU/ORNL 37-class score falls to "
+        f"{f3(G['msu_37class_n30000']['lightgbm']['macro_f1_mean'])} with 30,000 rows and is "
+        f"{f3(G['msu_37class_top18']['lightgbm']['macro_f1_mean'])} with 18 features.",
         "We also identified a concrete artefact of the synthetic generator: because it clips features to fixed ranges, "
         "many rows sit exactly on a bound, at class-dependent rates. A model given only these 'on-bound' indicators, and "
         f"no measured values, reaches a Macro-F1 of {f3(sat['bound_indicators_only_lightgbm']['macro_f1_mean'])}. The "
@@ -1493,15 +1513,25 @@ def response_sections(n):
         "Fig. 9b (updated); Section 3.6.1 (training times).")
 
     pk = e["packages"]
+    lat = latency_numbers(n)
     comment(10, [
         "They were not fully consistent before, and we have fixed this. The previous version combined results from a "
         "Windows environment (Python 3.12, scikit-learn 1.8, XGBoost 3.4, SHAP 0.52) and a Linux environment (Python "
         "3.11, scikit-learn 1.9, XGBoost 3.2, SHAP 0.51, SciPy 1.17). For this revision, every reported result, old and "
         f"new, was regenerated in one environment: {env_sentence(n)}, on Linux. The full package list is provided as "
         "environment/requirements-lock.txt, and reproduce_all.sh regenerates every table and figure.",
-        "Re-running everything changed a small number of values, which are updated and highlighted in the manuscript: "
-        + changes_sentence(n) + " The latency benchmark depends on hardware and was re-measured on the final machine."],
-        "Section 3.9 (rewritten); Code Availability; the updated values listed above.")
+        "Re-running everything reproduced every other reported value exactly. The values that changed, all by small "
+        "amounts and mostly for XGBoost (whose version changed from 3.2 to 3.4.1), are updated and highlighted in the "
+        "manuscript, and none changes a conclusion:"],
+        "Section 3.9 (rewritten); Code Availability; Section 4.8 and Table 9; Section 4.9 (policy latency); the updated "
+        "values listed above.", bullets=changes_bullets(n) + [
+        f"Section 4.8 and Table 9 (latency, re-measured on the final machine): mean {lat['mean_ms']:.2f} ms (previously "
+        f"1.70 ms on a Windows workstation), p99 {lat['p99_ms']:.2f} ms (2.70 ms), throughput {lat['tp1']:,.0f} samples/s "
+        f"at batch size 1 (610) and {lat['tp512']:,.0f} samples/s at batch size 512 (46,336); policy latency "
+        f"{n['pol']['latency_us']['mean']:.2f} μs per decision (1.21 μs).",
+        f"Section 4.3 (SHAP perturbation stability, re-implemented): {f3(stab['p01']['mean'])} and "
+        f"{f3(stab['p05']['mean'])} at 1% and 5% noise (previously 0.988 and 0.971).",
+        "Section 4.1, Table 3b and Fig. 9b: the re-implemented deep-learning baselines (comment 9)."])
 
     P_("We hope that the revised manuscript now resolves the reviewer's comments. We thank the reviewer again for "
        "comments that led to substantive corrections of the paper.")
@@ -1571,9 +1601,6 @@ def main():
         print(f"Saved manuscript/{name} ({len(ch)} re-run values changed)")
 
 
-if __name__ == "__main__":
-    main()
-
 
 # --------------------------------------------------------------------------
 # Abstract (Scientific Reports: at most 200 words, no references) and Conclusion
@@ -1593,22 +1620,21 @@ def headline(n):
 
 def abstract(D: Doc, n):
     h = headline(n)
-    txt = ("Smart grids couple communication networks with physical power systems and are therefore exposed to "
-           "cyber-physical attacks such as denial of service, false data injection, command tampering and induced "
-           "overload. We present an explainable intrusion detection and prevention framework that combines multidomain "
+    txt = ("Smart grids couple communication networks with physical power systems, exposing them to cyber-physical "
+           "attacks such as denial of service, false data injection and tampering. We present an explainable intrusion detection and prevention framework that combines multidomain "
            "features, tree-ensemble classifiers, SHAP explanations, a rule-based response layer and a real-time service, "
-           "and we test each of its claims explicitly. On a 30,000-sample synthetic dataset, LightGBM reached a Macro-F1 "
+           "and test each of its claims explicitly. On a 30,000-sample synthetic dataset, LightGBM reached a Macro-F1 "
            f"of {f3(h['lgb'][0])} under leakage-safe cross-validation, statistically equivalent to Random Forest and "
            "XGBoost; a data-complexity analysis shows that this dataset is much easier than real telemetry, partly "
            "because of generator artefacts. Retrained on the real MSU/ORNL power-system dataset, the pipeline reached "
-           f"{f3(h['msuA'])} for 37 classes with random splits but only {f3(h['msuB'])} on held-out recorded events, and "
+           f"{f3(h['msuA'])} for 37 classes with random splits but at most {f3(h['msuB'])} on held-out recorded events, and "
            "the synthetic-trained model transferred to it at chance level (ROC-AUC "
            f"{f3(h['auc_lo'])}-{f3(h['auc_hi'])}). Deletion and insertion tests showed that the SHAP rankings are faithful "
            "to the models. Kolmogorov-Smirnov and population-stability monitors detected simulated sensor drift, and "
            f"shadow retraining restored Macro-F1 from as low as {f3(h['m0'])} to at least {f3(h['m2'])}. Offline, the "
            f"response layer selected the intended action for {pct(h['asa'])} of samples; closed-loop prevention was not "
            "evaluated.")
-    words = len(txt.replace("-", " ").split())
+    words = len(txt.split())
     assert words <= 200, words
     D.replace("Smart grids integrate digital communication infrastructure", txt)
     return words
@@ -1646,7 +1672,7 @@ def conclusion(D: Doc, n):
               "expected field performance.")
     D.replace("Critically, independent external validation on the public MSU/ORNL",
               "On the real MSU/ORNL Power System Attack Dataset, the retrained pipeline reached a 37-class Macro-F1 of "
-              f"{f3(h['msuA'])} under random row-level splitting, but {f3(h['msuB'])} when whole recorded events were "
+              f"{f3(h['msuA'])} under random row-level splitting (LightGBM), but at most {f3(h['msuB'])} for any model when whole recorded events were "
               "held out, because neighbouring rows of the same event are near-duplicates; the event-disjoint values are "
               "the appropriate estimate for unseen events. Applied without retraining, the synthetic-trained model "
               f"performed at chance level (ROC-AUC {f3(h['auc_lo'])}-{f3(h['auc_hi'])}), so the study supports "
@@ -1783,10 +1809,9 @@ def sync_rest(D: Doc, n, changes):
               f"scaled from {lat['tp1']:,.0f} samples/second at batch size 1 to {lat['tp512']:,.0f} samples/second at "
               "batch size 512, indicating that the pipeline is well within real-time requirements for smart-grid "
               "telemetry rates and can additionally support high-throughput batch scenarios such as periodic bulk "
-              "re-scoring. These values replace those of the previous version, which were measured on a different "
-              "(Windows) machine. The additional latency contributed by the policy layer is measured separately in "
+              "re-scoring. The additional latency contributed by the policy layer is measured separately in "
               "Section 4.9.")
-    pl = n["rep"]["prevention_benchmark"]["latency_us"]
+    pl = n["pol"]["latency_us"]
     D.edit("Response latency. Because the policy lookup",
            ("The mean per-call latency was 1.21 μs (99th percentile 2.13 μs) on the machine described in Section 3.9. "
             "Although this machine differs from the one used for Table 9, the policy stage is roughly three orders of "
@@ -1804,11 +1829,40 @@ def repro_sentence(changes):
             + ", ".join(tabs) + " (details in the response letter).")
 
 
+COLS = {"Table 2": {1: "Macro-F1", 2: "accuracy", 3: "precision", 4: "recall"},
+        "Table 3": {1: "W", 2: "p", 3: "significant"},
+        "Table 3c": {1: "mean ΔMacro-F1", 2: "folds won", 3: "Wilcoxon W (p)", 4: "corrected t (p)"},
+        "Table 8": {2: "Macro-F1", 3: "accuracy"}}
+
+
+def changes_bullets(n):
+    ch = json.loads(CHANGES_FILE.read_text()) if CHANGES_FILE.exists() else []
+    by = {}
+    for c in ch:
+        if c[0] == "Table 9":
+            continue
+        if len(c) == 5:
+            tab, label, col, old, new = c
+            by.setdefault(tab, []).append(f"{label}, {COLS.get(tab, {}).get(col, 'column ' + str(col))}: {old} → {new}")
+        else:
+            by.setdefault(c[0], []).append(f"'{c[1]}' → '{c[2]}'")
+    names = {"Table 2": "Table 2 (and Fig. 9)", "Table 8": "Table 8 (and Fig. 15)"}
+    return [f"{names.get(t, t)}: " + "; ".join(v) + "." for t, v in by.items()]
+
+
 def changes_sentence(n):
     ch = json.loads(CHANGES_FILE.read_text()) if CHANGES_FILE.exists() else []
     if not ch:
         return "none."
     by = {}
-    for tab, label, col, old, new in ch:
+    for c in ch:
+        tab, old, new = c[0], c[-2], c[-1]
+        label = c[1] if len(c) == 5 else "text"
+        if tab == "Table 9":  # latency: re-measured on new hardware, described separately
+            continue
         by.setdefault(tab, []).append(f"{label}: {old} → {new}")
     return " ".join(f"{t}: " + "; ".join(v) + "." for t, v in by.items())
+
+
+if __name__ == "__main__":
+    main()

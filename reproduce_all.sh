@@ -23,6 +23,7 @@ step sim_overload          $PY -m scripts.simulate_overload
 step sim_tamper            $PY -m scripts.simulate_tamper
 step shap_stability        $PY -m scripts.shap_stability
 step dl_baselines          $PY -m scripts.dl_baselines
+step fig_dl_baselines      $PY -m scripts.r4_fig_dl_baselines
 
 # --- MSU/ORNL external dataset ----------------------------------------------
 for v in multiclass triple binary; do
@@ -42,5 +43,6 @@ step r4_gap                $PY -m scripts.r4_dataset_difficulty
 
 # --- latency last, on an otherwise idle machine -------------------------------
 step latency               $PY -m scripts.latency_benchmark --model lightgbm --n_runs 200
+step policy_latency        $PY -m scripts.r4_policy_latency
 step environment           $PY scripts/r4_environment_report.py
 echo done
