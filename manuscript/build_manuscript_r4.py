@@ -757,3 +757,336 @@ def c5_text(D: Doc, n, cap, c):
                 "not use, are the obvious next step. The synthetic dataset is not affected by this issue, because its "
                 "rows are generated independently (Section 3.2.1).")
     return p
+
+
+def section46_edits(D: Doc, n, c5):
+    v = c5["v"]["multiclass"]
+    ev = max(v["lightgbm"]["B"], v["random_forest"]["B"])
+    D.edit("Two findings stand out. First, performance on the real MSU/ORNL dataset",
+           ("and should be read as an honest bound on real-world generalization rather than a failure of the approach.",
+            "and should be read as an upper bound on real-world performance rather than a failure of the approach. "
+            "Section 4.6.2 shows that even these values are optimistic: random row-level splitting places rows of the "
+            "same recorded event in both training and test folds, and with whole events held out the best 37-class "
+            f"Macro-F1 is {f3(ev)}."))
+    D.edit("Several converging factors plausibly explain this gap.",
+           ("Several converging factors plausibly explain this gap.",
+            "The previous version proposed several converging factors to explain this gap; Section 4.6.3 now tests "
+            "them experimentally."),
+           ("we regard the 83.1% MSU/ORNL Macro-F1, rather than the 92.8% synthetic figure, as the more representative "
+            "estimate of performance on real grid telemetry, and we make no claim that a model trained on the synthetic "
+            "dataset would transfer directly to a real substation without retraining on local data (Section 4.10).",
+            "we regard the event-disjoint MSU/ORNL results of Section 4.6.2, rather than the 92.8% synthetic figure or "
+            "the random-split 83.1%, as the more representative estimate of performance on real grid telemetry, and we "
+            "make no claim that a model trained on the synthetic dataset transfers to a real substation without "
+            "retraining on local data; Section 4.6.1 tests this directly and finds that it does not."))
+
+
+def section46_captions(D: Doc):
+    D.edit("Table 8. External Validation Results on the MSU/ORNL",
+           ("(n = 78,377 real samples)",
+            "(n = 78,377 real samples; stratified random row-level 5-fold cross-validation, retrained on MSU/ORNL; "
+            "see Table 8e for event-disjoint results)"))
+    D.edit("To assess generalization beyond the controlled synthetic dataset, the identical modeling pipeline",
+           ("Table 8 reports the results.",
+            "Table 8 reports the results of this stratified random row-level protocol; Section 4.6.2 repeats the "
+            "evaluation with whole recorded events held out."))
+    t1 = D.table_after_caption("Table 1. Comparative Analysis")
+    from docx_edit import set_cell
+    for row in t1.rows:
+        if norm(row.cells[0].text).startswith("Proposed Work"):
+            set_cell(row.cells[3], "Yes (MSU/ORNL, retrained; event-disjoint; direct transfer tested)", D.mark)
+
+
+# --------------------------------------------------------------------------
+# Comment 7 -- SHAP faithfulness (new Section 4.3.1, Table 5b, Fig. 12b); stability values re-run
+# --------------------------------------------------------------------------
+def stability_numbers(n):
+    s = n["stab"]
+    tops = [tuple(t) for t in s["top5_per_fold"]]
+    same_set = all(set(t) == set(tops[0]) for t in tops)
+    modal = max(set(tops), key=tops.count)
+    return {"mean": s["mean_pairwise_spearman"], "min": s["min_pairwise_spearman"], "same_set": same_set,
+            "same_order": tops.count(modal), "top": list(modal), "p01": s["perturbation"]["0.01"],
+            "p05": s["perturbation"]["0.05"]}
+
+
+def c7(D: Doc, n):
+    S = stability_numbers(n)
+    assert S["same_set"]
+    F = n["faith"]
+    sy, ms = F["synthetic"], F["msu_37class"]
+    for r in (sy, ms):
+        a = r["auc"]["mean"]
+        assert a["shap_instance"]["deletion_auc_mean"] < a["random"]["deletion_auc_mean"] < a["shap_reverse"]["deletion_auc_mean"]
+        assert a["shap_instance"]["insertion_auc_mean"] > a["random"]["insertion_auc_mean"]
+    D.edit("A natural question for any post-hoc explanation method",
+           ("the top-5 ranked features were identical (packet_error_rate, power_factor, phase_imbalance_percent, "
+            "breaker_closed, substation_temp_c, in near-identical order) in 4 of 5 folds.",
+            f"the top-5 ranked features were the same five features in all five folds ({', '.join(S['top'])}), in "
+            f"identical order in {S['same_order']} of 5 folds."),
+           ("averaged 0.947 (min 0.901 across all pairs)",
+            f"averaged {f3(S['mean'])} (min {f3(S['min'])} across all pairs)"),
+           ("correlated with the clean-input ranking at 0.988 ± 0.001 (1% noise) and 0.971 ± 0.001 (5% noise)",
+            f"correlated with the clean-input ranking at {f3(S['p01']['mean'])} ± {f3(S['p01']['std'])} (1% noise) and "
+            f"{f3(S['p05']['mean'])} ± {f3(S['p05']['std'])} (5% noise)"),
+           ("Together, these results indicate the explanations in this section characterize a stable property of the "
+            "model rather than a single-split artifact.",
+            "Together, these results indicate the explanations in this section characterize a stable property of the "
+            "model rather than a single-split artifact. Stability does not, however, show that an explanation is "
+            "faithful, i.e. that the features it ranks highest are the ones the model's decision actually depends on; "
+            "Section 4.3.1 tests this directly."))
+    anchor = D.para("Table 5. SHAP-Based Attack Interpretation Summary")
+    h = D.after(anchor, "3.6.1 STATISTICAL POWER", "4.3.1 FAITHFULNESS OF THE SHAP EXPLANATIONS")
+    p = D.after(h, "Two findings stand out.",
+                "Faithfulness was tested with deletion and insertion curves and with remove-and-retrain (ROAR), on "
+                "both datasets. For each explained test sample and its predicted class c, the features were replaced "
+                "by a baseline value one at a time in a given order (deletion), or restored one at a time starting "
+                "from the all-baseline input (insertion), and the model's predicted probability of c was recorded "
+                "after every step. If an ordering ranks the features the decision depends on first, deletion lowers "
+                "the probability quickly (low area under the deletion curve) and insertion raises it quickly (high "
+                "area under the insertion curve). Five orderings were compared: the sample's own |SHAP| values for "
+                "class c (instance-level SHAP), the same ranking reversed, the global mean-|SHAP| ranking, LightGBM's "
+                "gain importance, and random orders. Two baselines were used: the training-fold mean, and values "
+                "drawn from random training rows, which keeps every replaced feature within its observed range. "
+                f"The synthetic analysis used the five seed-42 folds ({sy['auc']['mean']['random']['n_samples']:,} "
+                "explained test samples); the MSU/ORNL analysis used the 37-class LightGBM models of Table 8 "
+                f"({ms['auc']['mean']['random']['n_samples']:,} samples, features removed in steps of four). For ROAR, "
+                "the globally highest-ranked SHAP features were removed and the model was retrained and re-evaluated "
+                "on the same folds, compared with removing the same number of randomly chosen features.")
+    names = {"shap_instance": "Instance-level SHAP", "shap_global": "Global mean |SHAP|", "gain_global": "LightGBM gain",
+             "random": "Random order", "shap_reverse": "Instance-level SHAP, reversed"}
+    rows = [["Dataset", "Feature order", "Deletion AUC, mean baseline (↓)", "Insertion AUC, mean baseline (↑)",
+             "Deletion AUC, marginal baseline (↓)"]]
+    for dn, r in (("Synthetic", sy), ("MSU/ORNL 37-class", ms)):
+        for o in ("shap_instance", "shap_global", "gain_global", "random", "shap_reverse"):
+            rows.append([dn, names[o], f3(r["auc"]["mean"][o]["deletion_auc_mean"]),
+                         f3(r["auc"]["mean"][o]["insertion_auc_mean"]), f3(r["auc"]["marginal"][o]["deletion_auc_mean"])])
+    cap = D.table(p, "Table 2. Model Comparison", rows,
+                  "Table 5b. SHAP Faithfulness: Area Under the Deletion and Insertion Curves of the Predicted-Class "
+                  "Probability (LightGBM, Held-Out Samples)")
+    vs, vm = sy["auc"]["mean"]["shap_vs_random"], ms["auc"]["mean"]["shap_vs_random"]
+    fs, fm = sy["prediction_flip_rate"], ms["prediction_flip_rate"]
+    ro, rm = sy["roar"], ms["roar"]
+    base_s = ro["all_features"]
+    ks = [k for k in (1, 2, 3, 5) if f"k{k}" in ro]
+    roar_ok = all(ro[f"k{k}"]["remove_top_shap"] < ro[f"k{k}"]["remove_random_mean"] for k in ks)
+    roar_txt = "; ".join(f"k = {k}: {f3(ro[f'k{k}']['remove_top_shap'])} vs. {f3(ro[f'k{k}']['remove_random_mean'])}"
+                         for k in ks)
+    m8 = rm["k8"]
+    p2 = D.after(cap, "Two findings stand out.",
+                 "On both datasets the instance-level SHAP ordering is the most faithful of the five (Table 5b, Fig. "
+                 "12b): it gives the lowest deletion and the highest insertion area, the reversed ordering gives the "
+                 "highest deletion area, and random orders lie in between. The ordering of the methods is the same with "
+                 "the marginal baseline. Per sample, SHAP deletion was faster than random deletion for "
+                 f"{pct(vs['deletion_shap_lower_fraction'])} of synthetic and {pct(vm['deletion_shap_lower_fraction'])} "
+                 f"of MSU/ORNL samples (Wilcoxon signed-rank p = {vs['deletion_wilcoxon_p']:.1e} and "
+                 f"{vm['deletion_wilcoxon_p']:.1e}). Replacing only the single top-SHAP feature by its mean changed the "
+                 f"predicted class of {pct(fs['shap_top1'])} of synthetic samples, against {pct(fs['random_top1'])} for "
+                 f"a random feature; for the top three features the rates were {pct(fs['shap_top3'])} and "
+                 f"{pct(fs['random_top3'])} (MSU/ORNL: {pct(fm['shap_top3'])} vs. {pct(fm['random_top3'])}). "
+                 f"Remove-and-retrain gives the {'same' if roar_ok else 'a weaker'} picture at the level of the "
+                 f"retrained model: starting from a Macro-F1 of {f3(base_s)} with all synthetic features, removing the "
+                 f"k most important SHAP features gives a Macro-F1 of ({roar_txt} for k random features); on "
+                 f"MSU/ORNL, removing the eight highest-ranked features gives {f3(m8['remove_top_shap'])} against "
+                 f"{f3(m8['remove_random_mean'])} for eight random features (all features: {f3(rm['all_features'])}). "
+                 "We therefore regard the SHAP rankings used in this paper as faithful to the trained models. Two "
+                 "qualifications apply. Faithfulness tests measure agreement between an explanation and the model, not "
+                 "between the explanation and the physical cause of an attack: a feature that the model uses because "
+                 "of a generator artefact (Section 4.6.3) will be ranked as faithfully as a physically meaningful one. "
+                 "And replacing features by a baseline creates inputs that may lie off the data distribution, which "
+                 "is why the marginal baseline and remove-and-retrain, which avoids such inputs, are reported as well.")
+    return D.figure(p2, FIG / "shap_faithfulness_curves.png", 6.0,
+                    "**Fig. 12b. SHAP Faithfulness: Deletion (left) and Insertion (right) Curves.** Mean predicted "
+                    "probability of the originally predicted class as features are replaced by the training mean "
+                    "(deletion) or restored from it (insertion) in the order given by each method; top: synthetic "
+                    "dataset, bottom: MSU/ORNL 37-class. A faster fall under deletion and a faster rise under insertion "
+                    "indicate a more faithful ranking.")
+
+
+# --------------------------------------------------------------------------
+# Comment 8 -- is the synthetic dataset simply easier? (new Section 4.6.3, Table 8f)
+# --------------------------------------------------------------------------
+def c8(D: Doc, n, anchor, c5):
+    G = n["gap"]
+    s5, sb, m37, mb = G["synthetic_5class"], G["synthetic_binary"], G["msu_37class"], G["msu_binary"]
+    sat = G["synthetic_saturation"]
+    dj = n["disjoint"]
+    ev37 = max(dj["multiclass"]["B_event_disjoint_groupkfold5"][m]["macro_f1_mean"] for m in ("lightgbm", "random_forest"))
+    evb = max(dj["binary"]["B_event_disjoint_groupkfold5"][m]["macro_f1_mean"] for m in ("lightgbm", "random_forest"))
+    cs, cm = s5["complexity"], m37["complexity"]
+    # the text relies on: every complexity measure says the synthetic task is easier, by a wide margin
+    assert cs["F1_max_fisher_ratio"] > 10 * cm["F1_max_fisher_ratio"]
+    assert cs["N1_boundary_fraction"] < cm["N1_boundary_fraction"] and cs["knn1_loo_error"] < cm["knn1_loo_error"]
+    assert sb["complexity"]["N1_boundary_fraction"] < mb["complexity"]["N1_boundary_fraction"]
+    cap = lambda r, k: r["capacity"][k]["macro_f1_mean"]
+    assert cap(s5, "logistic_regression") > 0.75 and cap(m37, "logistic_regression") < 0.3
+    assert cap(sb, "lightgbm") > cap(mb, "lightgbm") > evb
+    lr_share_s = (cap(s5, "logistic_regression") - cap(s5, "majority_class")) / (cap(s5, "lightgbm") - cap(s5, "majority_class"))
+    lr_share_m = (cap(m37, "logistic_regression") - cap(m37, "majority_class")) / (cap(m37, "lightgbm") - cap(m37, "majority_class"))
+    n30, t18 = G["msu_37class_n30000"]["lightgbm"]["macro_f1_mean"], G["msu_37class_top18"]["lightgbm"]["macro_f1_mean"]
+    n30b, t18b = G["msu_binary_n30000"]["lightgbm"]["macro_f1_mean"], G["msu_binary_top18"]["lightgbm"]["macro_f1_mean"]
+    wo = sat["without_rows_on_bounds"]
+    ind, maj = sat["bound_indicators_only_lightgbm"]["macro_f1_mean"], sat["bound_indicators_only_majority"]["macro_f1_mean"]
+    assert ind > maj + 0.2
+    per = sat["per_feature_class_fraction_on_bound"]
+
+    h = D.after(anchor, "3.6.1 STATISTICAL POWER", "4.6.3 IS THE SYNTHETIC DATASET EASIER? A DATA-COMPLEXITY ANALYSIS")
+    p = D.after(h, "Two findings stand out.",
+                "The factors offered in Section 4.6 to explain the performance gap were tested with identical code on "
+                "both datasets (standardized features). (i) Three data-complexity measures from the literature on "
+                "classification difficulty: the maximum Fisher discriminant ratio of a single feature (F1, averaged "
+                "over one-vs-rest class problems; higher = easier), the fraction of points on the class boundary of a "
+                "minimum spanning tree (N1; lower = easier), and the leave-one-out 1-nearest-neighbour error (lower = "
+                "easier), the last two on a stratified subsample of 4,000 rows. (ii) A model-capacity curve: Macro-F1 of "
+                "models of increasing capacity, from a majority-class predictor and logistic regression over decision "
+                "trees of depth 1, 2, 4 and 8 to the LightGBM of Tables 2 and 8, under the same five-fold protocol. On an "
+                "easy distribution, low-capacity models already come close to the ceiling. (iii) Controlled comparisons "
+                "that remove known confounders: the same binary attack-versus-non-attack task on both datasets, the "
+                "MSU/ORNL data subsampled to the 30,000 rows of the synthetic dataset, and restricted to its 18 "
+                "highest-ranked SHAP features (Table 8b) to match the synthetic feature count. (iv) Artefacts of the "
+                "synthetic generator, which clips every feature to a fixed range, so that some rows lie exactly on a "
+                "range bound. Table 8f summarises (i)-(iii).")
+    rows = [["Measure", "Synthetic, 5 classes", "Synthetic, binary", "MSU/ORNL, 37 classes", "MSU/ORNL, binary"],
+            ["Fisher ratio F1 (↑ easier)", f3(cs["F1_max_fisher_ratio"]), f3(sb["complexity"]["F1_max_fisher_ratio"]),
+             f3(cm["F1_max_fisher_ratio"]), f3(mb["complexity"]["F1_max_fisher_ratio"])],
+            ["Boundary fraction N1 (↓ easier)", f3(cs["N1_boundary_fraction"]), f3(sb["complexity"]["N1_boundary_fraction"]),
+             f3(cm["N1_boundary_fraction"]), f3(mb["complexity"]["N1_boundary_fraction"])],
+            ["1-NN error (↓ easier)", f3(cs["knn1_loo_error"]), f3(sb["complexity"]["knn1_loo_error"]),
+             f3(cm["knn1_loo_error"]), f3(mb["complexity"]["knn1_loo_error"])]]
+    labels = [("majority_class", "Macro-F1: majority class"), ("logistic_regression", "Macro-F1: logistic regression"),
+              ("tree_depth1", "Macro-F1: tree, depth 1"), ("tree_depth2", "Macro-F1: tree, depth 2"),
+              ("tree_depth4", "Macro-F1: tree, depth 4"), ("tree_depth8", "Macro-F1: tree, depth 8"),
+              ("lightgbm", "Macro-F1: LightGBM (random 5-fold)")]
+    for k, lab in labels:
+        rows.append([lab] + [f3(cap(r, k)) for r in (s5, sb, m37, mb)])
+    rows.append(["Macro-F1: best model, event-disjoint (Table 8e)", "n/a (independent rows)", "n/a (independent rows)",
+                 f3(ev37), f3(evb)])
+    rows.append(["Macro-F1: LightGBM, 30,000 rows", "(30,000 rows)", "(30,000 rows)", f3(n30), f3(n30b)])
+    rows.append(["Macro-F1: LightGBM, top-18 features", "(18 features)", "(18 features)", f3(t18), f3(t18b)])
+    cap_t = D.table(p, "Table 2. Model Comparison", rows,
+                    "Table 8f. Data-Complexity Measures, Model-Capacity Curve, and Controlled Comparisons for the "
+                    "Synthetic and MSU/ORNL Datasets (Macro-F1, Five-Fold Cross-Validation)")
+    top_bounds = sorted(((f, c, v) for f, d in per.items() for c, v in d.items() if c != "normal"),
+                        key=lambda x: -x[2])[:3]
+    bt = "; ".join(f"{pct(v)} of {c} rows on a bound of {f} (normal rows: {pct(per[f]['normal'])})" for f, c, v in top_bounds)
+    p2 = D.after(cap_t, "Two findings stand out.",
+                 "Every measure says that the synthetic task is much easier. The best single feature separates the "
+                 f"synthetic classes with a Fisher ratio of {f3(cs['F1_max_fisher_ratio'])}, against "
+                 f"{f3(cm['F1_max_fisher_ratio'])} for MSU/ORNL; {pct(cs['N1_boundary_fraction'])} of synthetic points "
+                 f"lie on a class boundary, against {pct(cm['N1_boundary_fraction'])}. A logistic regression already "
+                 f"reaches a Macro-F1 of {f3(cap(s5, 'logistic_regression'))} on the synthetic data, "
+                 f"{pct(lr_share_s, 0)} of the way from the majority-class predictor to LightGBM, whereas on MSU/ORNL it "
+                 f"reaches {f3(cap(m37, 'logistic_regression'))} ({pct(lr_share_m, 0)} of the way). The gap persists "
+                 "when the confounders named in Section 4.6 are removed. With the same binary label space, LightGBM "
+                 f"reaches {f3(cap(sb, 'lightgbm'))} on synthetic data against {f3(cap(mb, 'lightgbm'))} on MSU/ORNL "
+                 f"under random splitting and {f3(evb)} under event-disjoint validation. Reducing MSU/ORNL to 30,000 "
+                 f"rows or to 18 features changes its 37-class Macro-F1 only to {f3(n30)} and {f3(t18)}, respectively, "
+                 "so neither the number of rows nor the number of features explains the gap. Label granularity "
+                 "therefore accounts for only part of the difference; most of it is in the data.")
+    p3 = D.after(p2, "Two findings stand out.",
+                 "Part of this ease is an artefact of how the synthetic data were generated. Because the generator clips "
+                 "every feature to a fixed range, many rows sit exactly on a range bound, and how often they do depends "
+                 f"strongly on the class: {bt}. A LightGBM that is given only the 36 binary indicators 'on the lower "
+                 "bound' and 'on the upper bound' of each continuous feature, and none of the measured values, reaches a "
+                 f"Macro-F1 of {f3(ind)} (majority class: {f3(maj)}). These indicators have no physical meaning; a "
+                 "classifier can exploit them only on generated data. When every row that lies on any bound is removed, "
+                 f"{wo['n_rows']:,} rows remain, most of them normal, and LightGBM reaches {f3(wo['lightgbm']['macro_f1_mean'])} "
+                 "on them, so the classes remain separable without the artefact, but less so. In summary, the synthetic "
+                 "dataset is easier than the real one, for two documented reasons: its attack classes are generated as "
+                 "distinct, well-separated signatures (including features such as packet rate that MSU/ORNL does not "
+                 "contain, Section 4.7), and its generator leaves class-dependent clipping artefacts. The synthetic "
+                 f"Macro-F1 of {f3(cap(s5, 'lightgbm'))} should therefore be read as performance on a controlled, "
+                 "easier benchmark and not as an estimate of performance on real telemetry, for which the event-disjoint "
+                 "MSU/ORNL values of Table 8e are the better guide.")
+    return p3
+
+
+# --------------------------------------------------------------------------
+# Section 4.10 -- limitations brought in line with the new results
+# --------------------------------------------------------------------------
+def limitations(D: Doc, n, c5):
+    S = n["single"]["summary"]
+    ev37 = max(c5["v"]["multiclass"][m]["B"] for m in ("lightgbm", "random_forest"))
+    D.edit("Several limitations should be considered when interpreting these results.",
+           ("The substantially lower performance on the real MSU/ORNL dataset (Sections 4.6, 4.7) should be treated as "
+            "the more representative estimate of real-world performance.",
+            "The data-complexity analysis of Section 4.6.3 shows that the synthetic task is substantially easier than "
+            "the real one, partly because of class-dependent clipping artefacts of the generator. The substantially "
+            "lower performance on the real MSU/ORNL dataset, in particular under event-disjoint validation (Section "
+            f"4.6.2; best 37-class Macro-F1 {f3(ev37)}), should be treated as the more representative estimate of "
+            "real-world performance."),
+           ("should not be assumed to transfer to another without retraining and re-validation on site-specific data.",
+            "should not be assumed to transfer to another without retraining and re-validation on site-specific data; "
+            "Section 4.6.1 shows directly that the synthetic-trained model does not transfer to MSU/ORNL. All "
+            "MSU/ORNL models classify single rows; features computed over windows of consecutive measurements, which "
+            "may recover performance on unseen events, were not evaluated."))
+    D.replace("Second, the distribution-shift results (Section 4.5) show",
+              "Second, the drift experiments of Section 4.5.1 show that Kolmogorov-Smirnov and PSI monitoring detects "
+              "the distribution shifts of Table 7 and that label-free re-centring and shadow retraining recover most of "
+              "the lost performance, but they were carried out with simulated offsets on synthetic data. Drifts that "
+              "change the shape of a distribution, gradual sensor ageing, and the labelling effort that shadow "
+              "retraining needs in the field were not tested, and single-feature offsets of 0.1 standard deviations "
+              f"were detected in only {pct(S['0.1']['ks_detection_rate_mean'])} of windows on average; most such offsets "
+              "were harmless, but one (line load) was not. Re-centring corrects pure offsets only.")
+    D.edit("Fourth, the SHAP analysis of the MSU/ORNL dataset (Section 4.7)",
+           ("is based on a random sample of held-out rows, and was not accompanied by a stability check on that dataset.",
+            "is based on a random sample of held-out rows, and was not accompanied by a stability check on that dataset "
+            "(its faithfulness was tested, Section 4.3.1). It explains models evaluated under random row-level "
+            "splitting, whose performance Section 4.6.2 shows to be optimistic."))
+    D.edit("Sixth, as scoped in Section 3.1, the prevention/policy layer is evaluated post hoc",
+           ("the prevention/policy layer is evaluated post hoc (Section 4.9) by passing cross-validated detection "
+            "predictions through the deployed policy function;",
+            "the prevention/policy layer is evaluated offline and open-loop (Section 4.9) by passing cross-validated "
+            "detection predictions through the deployed policy function, so the reported action-selection accuracy is "
+            "not a rate of prevented attacks, and its confidence threshold was analysed only for the well-calibrated "
+            "synthetic-data model (Section 4.9.1);"))
+    D.replace("Finally, the SHAP explanations of Section 4.3 were validated for stability",
+              "Finally, the SHAP explanations were tested for stability (Section 4.3) and for faithfulness to the "
+              "model on both datasets (Section 4.3.1). Faithfulness to the model is not evidence that a highly ranked "
+              "feature is the physical cause of an attack, and robustness of the explanations to adversarially "
+              "crafted inputs was not tested. Also not addressed is a systematic comparison against deep-learning "
+              "architectures beyond the CNN-LSTM and Transformer baselines of Section 4.1 -- specifically GNNs and "
+              "TabNet, for the reasons stated there.")
+
+
+def c9_finish(D: Doc, n, spec_rows, tb):
+    dl = n["dl"]["summary"]
+    lg, cl, tr = dl["lightgbm_same_90pct_split"], dl["cnn_lstm"], dl["transformer"]
+    assert lg["macro_f1_mean"] > max(cl["macro_f1_mean"], tr["macro_f1_mean"])
+    t2 = n["cv"]
+    rows = [["Model", "Macro-F1 (mean ± std)", "Accuracy (mean ± std)", "Mean train time / fold"]]
+    rows.append(["LightGBM (Table 2; full training fold)", f"{f3(t2['lightgbm']['macro_f1_mean'])} ± "
+                 f"{f3(t2['lightgbm']['macro_f1_std'])}", "--", "--"])
+    for name, r in (("LightGBM (same 90% training part as the networks)", lg), ("CNN-LSTM", cl),
+                    ("Transformer encoder", tr)):
+        rows.append([name, f"{f3(r['macro_f1_mean'])} ± {f3(r['macro_f1_std'])}",
+                     f"{pct(r['accuracy_mean'])} ± {pct(r['accuracy_std'])}", f"{r['train_seconds_mean']:.0f} s"])
+    new = clone_table(tb, tb, rows, D.mark)
+    tb._tbl.getparent().remove(tb._tbl)
+    D.edit("Table 3b. Tree-Ensemble vs. Deep-Learning Baselines",
+           ("(5-fold CV, identical protocol)",
+            "(5-fold CV, identical protocol; networks specified in Table 3d; training times on the machine of Section "
+            "3.9 are indicative only)"))
+    cap = D.para("Table 3b. Tree-Ensemble vs. Deep-Learning Baselines")
+    cap3d = D.table(cap, "Table 10. Ground-Truth Class-to-Action Mapping", spec_rows,
+                    "Table 3d. Complete Specification of the Deep-Learning Baselines (scripts/dl_baselines.py)")
+    wc, wt = cl["wilcoxon_vs_lightgbm"], tr["wilcoxon_vs_lightgbm"]
+    D.replace("LightGBM outperformed both deep-learning baselines on every one of the five folds",
+              f"Trained on the same 90% of each training fold, LightGBM reached a Macro-F1 of {f3(lg['macro_f1_mean'])}, "
+              f"against {f3(cl['macro_f1_mean'])} for the CNN-LSTM and {f3(tr['macro_f1_mean'])} for the Transformer, "
+              f"and it was better on {wc['lightgbm_wins']} and {wt['lightgbm_wins']} of the five folds, respectively "
+              f"(paired Wilcoxon signed-rank test, p = {wc['p']:.4f} and p = {wt['p']:.4f}). With n = 5 paired folds, "
+              "p = 0.0625 is the smallest attainable p-value, so a consistent directional advantage cannot be confirmed "
+              "at α = 0.05 -- the same statistical-power caveat that applies to Table 3; because of the training cost of "
+              "the networks, this comparison was not extended to repeated cross-validation. Compared with the previous "
+              "version, whose CNN-LSTM and Transformer were stopped on the training loss after at most 15 epochs, the "
+              "fully specified networks of Table 3d use a validation set for early stopping and a selected learning "
+              "rate and width, and Table 3b replaces the earlier values. The conclusion is unchanged: on 18 tabular "
+              "features and about 30,000 rows, gradient-boosted trees remain at least as accurate as these deep "
+              "architectures, consistent with the broader empirical finding for small-to-medium tabular data.")
+    D.replace_image("Fig. 9b. Macro-F1 of tree-ensemble vs. deep-learning models", FIG / "dl_baselines.png")
+    D.replace("Fig. 9b. Macro-F1 of tree-ensemble vs. deep-learning models",
+              "**Fig. 9b. Macro-F1 of LightGBM vs. the Deep-Learning Baselines Under Identical 5-Fold CV (error bars = ± 1 "
+              "std).** All three models are trained on the same 90% of each training fold (the remaining 10% is the "
+              "networks' early-stopping set) and tested on the same outer fold.")
+    return cap3d
