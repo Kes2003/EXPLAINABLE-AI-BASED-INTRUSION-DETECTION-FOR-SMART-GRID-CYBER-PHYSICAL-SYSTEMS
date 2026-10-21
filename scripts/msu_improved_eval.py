@@ -89,13 +89,18 @@ def data():
     return ref, feats, ev, labels
 
 
-def run_rows(res, ref, feats, ev, labels):
+def row_features(ref, feats, ev):
+    """The `full` per-row feature matrix (causal, within each event)."""
     base = ref[feats].copy()
     base["_event"] = ev
     P = phys_features(ref)
     Pk = pd.concat([P, base[["_event"]]], axis=1)
-    full = pd.concat([ref[feats], P, temporal_features(base, feats),
+    return pd.concat([ref[feats], P, temporal_features(base, feats),
                       expanding_features(base, feats), expanding_features(Pk, list(P.columns))], axis=1)
+
+
+def run_rows(res, ref, feats, ev, labels):
+    full = row_features(ref, feats, ev)
     sets = {"raw": ref[feats].values.astype(np.float32), "full": full.values.astype(np.float32)}
     groups = ref["_file"].values
     for v in VARIANTS:
