@@ -1,0 +1,388 @@
+{
+  "synthetic_saturation": {
+    "per_feature_class_fraction_on_bound": {
+      "voltage_v": {
+        "dos": 0.004219409282700422,
+        "fdi": 0.4177071509648127,
+        "normal": 0.004396636359755837,
+        "overload": 0.022222222222222223,
+        "tamper": 0.02619808306709265
+      },
+      "current_a": {
+        "dos": 0.049578059071729956,
+        "fdi": 0.048240635641316684,
+        "normal": 0.05011311734323644,
+        "overload": 0.0437037037037037,
+        "tamper": 0.05047923322683706
+      },
+      "frequency_hz": {
+        "dos": 0.0,
+        "fdi": 0.0,
+        "normal": 8.537157980108423e-05,
+        "overload": 0.0,
+        "tamper": 0.0
+      },
+      "power_factor": {
+        "dos": 0.08386075949367089,
+        "fdi": 0.36606129398410897,
+        "normal": 0.09032313142954711,
+        "overload": 0.10074074074074074,
+        "tamper": 0.09968051118210862
+      },
+      "active_power_kw": {
+        "dos": 0.034282700421940926,
+        "fdi": 0.04086265607264472,
+        "normal": 0.039953899346907414,
+        "overload": 0.03851851851851852,
+        "tamper": 0.04536741214057508
+      },
+      "reactive_power_kvar": {
+        "dos": 0.0580168776371308,
+        "fdi": 0.07037457434733257,
+        "normal": 0.06616297434584027,
+        "overload": 0.06888888888888889,
+        "tamper": 0.06773162939297124
+      },
+      "thd_percent": {
+        "dos": 0.08175105485232068,
+        "fdi": 0.03688989784335982,
+        "normal": 0.0851581508515815,
+        "overload": 0.08222222222222222,
+        "tamper": 0.0817891373801917
+      },
+      "packet_rate": {
+        "dos": 0.012130801687763712,
+        "fdi": 0.05221339387060159,
+        "normal": 0.05339992316557818,
+        "overload": 0.05703703703703704,
+        "tamper": 0.047284345047923323
+      },
+      "packet_error_rate": {
+        "dos": 0.4720464135021097,
+        "fdi": 0.10896708286038592,
+        "normal": 0.08925598668203355,
+        "overload": 0.11555555555555555,
+        "tamper": 0.12268370607028754
+      },
+      "substation_temp_c": {
+        "dos": 0.13871308016877637,
+        "fdi": 0.1282633371169126,
+        "normal": 0.12413027703077645,
+        "overload": 0.16148148148148148,
+        "tamper": 0.12523961661341854
+      },
+      "transformer_oil_temp_c": {
+        "dos": 0.05485232067510549,
+        "fdi": 0.05902383654937571,
+        "normal": 0.05715627267682589,
+        "overload": 0.14962962962962964,
+        "tamper": 0.054313099041533544
+      },
+      "line_load_percent": {
+        "dos": 0.007383966244725738,
+        "fdi": 0.011350737797956867,
+        "normal": 0.00789687113160029,
+        "overload": 0.38592592592592595,
+        "tamper": 0.005111821086261981
+      },
+      "tap_position": {
+        "dos": 0.027953586497890294,
+        "fdi": 0.024404086265607264,
+        "normal": 0.02932513766167243,
+        "overload": 0.03259259259259259,
+        "tamper": 0.025559105431309903
+      },
+      "phase_imbalance_percent": {
+        "dos": 0.07911392405063292,
+        "fdi": 0.0681044267877412,
+        "normal": 0.07341955862893243,
+        "overload": 0.0837037037037037,
+        "tamper": 0.1501597444089457
+      },
+      "feeder_voltage_v": {
+        "dos": 0.024261603375527425,
+        "fdi": 0.015891032917139614,
+        "normal": 0.019678149144149913,
+        "overload": 0.023703703703703703,
+        "tamper": 0.021725239616613417
+      },
+      "feeder_current_a": {
+        "dos": 0.05168776371308017,
+        "fdi": 0.04767309875141884,
+        "normal": 0.04861911469671746,
+        "overload": 0.04962962962962963,
+        "tamper": 0.051118210862619806
+      },
+      "demand_kw": {
+        "dos": 0.04272151898734177,
+        "fdi": 0.03916004540295119,
+        "normal": 0.04093567251461988,
+        "overload": 0.0362962962962963,
+        "tamper": 0.04536741214057508
+      }
+    },
+    "rows_on_any_bound_fraction": 0.6370333333333333,
+    "rows_on_any_bound_by_class": {
+      "dos": 0.7573839662447257,
+      "fdi": 0.8303064699205448,
+      "normal": 0.6013147223289367,
+      "overload": 0.8066666666666666,
+      "tamper": 0.6619808306709265
+    },
+    "bound_indicators_only_lightgbm": {
+      "macro_f1_mean": 0.579464679971335,
+      "macro_f1_std": 0.02102104152701719
+    },
+    "bound_indicators_only_majority": {
+      "macro_f1_mean": 0.17539446300141592,
+      "macro_f1_std": 1.0297390114738189e-05
+    },
+    "without_rows_on_bounds": {
+      "n_rows": 10889,
+      "class_counts": {
+        "normal": 9340,
+        "tamper": 529,
+        "dos": 460,
+        "fdi": 299,
+        "overload": 261
+      },
+      "lightgbm": {
+        "macro_f1_mean": 0.8505935811267941,
+        "macro_f1_std": 0.018098917211017317
+      }
+    }
+  },
+  "synthetic_5class": {
+    "complexity": {
+      "F1_max_fisher_ratio": 4.697375917228342,
+      "N1_boundary_fraction": 0.1445,
+      "knn1_loo_error": 0.086,
+      "n_features": 18,
+      "n_classes": 5,
+      "n_rows": 30000
+    },
+    "capacity": {
+      "logistic_regression": {
+        "macro_f1_mean": 0.8016050790258988,
+        "macro_f1_std": 0.005017459402285431
+      },
+      "tree_depth1": {
+        "macro_f1_mean": 0.2041823401501393,
+        "macro_f1_std": 0.0608909513769255
+      },
+      "tree_depth2": {
+        "macro_f1_mean": 0.5195081322212217,
+        "macro_f1_std": 0.005609493431505131
+      },
+      "tree_depth4": {
+        "macro_f1_mean": 0.7223520296710804,
+        "macro_f1_std": 0.0066947241146861815
+      },
+      "tree_depth8": {
+        "macro_f1_mean": 0.8403272527118222,
+        "macro_f1_std": 0.018743543007344505
+      },
+      "lightgbm": {
+        "macro_f1_mean": 0.9284626691455546,
+        "macro_f1_std": 0.003029523665417807
+      },
+      "majority_class": {
+        "macro_f1_mean": 0.17539446300141592,
+        "macro_f1_std": 1.0297390114738189e-05
+      }
+    }
+  },
+  "synthetic_binary": {
+    "complexity": {
+      "F1_max_fisher_ratio": 0.3616317293813596,
+      "N1_boundary_fraction": 0.1315,
+      "knn1_loo_error": 0.078,
+      "n_features": 18,
+      "n_classes": 2,
+      "n_rows": 30000
+    },
+    "capacity": {
+      "logistic_regression": {
+        "macro_f1_mean": 0.8496744655678763,
+        "macro_f1_std": 0.0032589624109250104
+      },
+      "tree_depth1": {
+        "macro_f1_mean": 0.682590455287046,
+        "macro_f1_std": 0.007745433079539767
+      },
+      "tree_depth2": {
+        "macro_f1_mean": 0.7867552292577549,
+        "macro_f1_std": 0.004465023402032937
+      },
+      "tree_depth4": {
+        "macro_f1_mean": 0.8943268322369686,
+        "macro_f1_std": 0.004178821884335755
+      },
+      "tree_depth8": {
+        "macro_f1_mean": 0.9429128901931879,
+        "macro_f1_std": 0.0010577495630230878
+      },
+      "lightgbm": {
+        "macro_f1_mean": 0.9572383290135684,
+        "macro_f1_std": 0.0012147136108442635
+      },
+      "majority_class": {
+        "macro_f1_mean": 0.4384861575035398,
+        "macro_f1_std": 2.574347528684547e-05
+      }
+    }
+  },
+  "msu_37class": {
+    "complexity": {
+      "F1_max_fisher_ratio": 0.06941630221670432,
+      "N1_boundary_fraction": 0.89175,
+      "knn1_loo_error": 0.68525,
+      "n_features": 128,
+      "n_classes": 37,
+      "n_rows": 78377
+    },
+    "capacity": {
+      "logistic_regression": {
+        "macro_f1_mean": 0.16441344125938073,
+        "macro_f1_std": 0.002864657496993444
+      },
+      "tree_depth1": {
+        "macro_f1_mean": 0.008376782240731628,
+        "macro_f1_std": 0.0001236060591040189
+      },
+      "tree_depth2": {
+        "macro_f1_mean": 0.016150918408466997,
+        "macro_f1_std": 0.0013715714329472818
+      },
+      "tree_depth4": {
+        "macro_f1_mean": 0.05335749212926584,
+        "macro_f1_std": 0.0010308404964357073
+      },
+      "tree_depth8": {
+        "macro_f1_mean": 0.17981571440632135,
+        "macro_f1_std": 0.006137014989528378
+      },
+      "majority_class": {
+        "macro_f1_mean": 0.0030488459640205462,
+        "macro_f1_std": 8.990906801121925e-08
+      },
+      "lightgbm": {
+        "macro_f1_mean": 0.8306542930309625,
+        "macro_f1_std": 0.0021788152567322567,
+        "source": "Table 8 (msu_ics_dataset_eval.py)"
+      }
+    }
+  },
+  "msu_binary": {
+    "complexity": {
+      "F1_max_fisher_ratio": 0.00827688215755407,
+      "N1_boundary_fraction": 0.497,
+      "knn1_loo_error": 0.29975,
+      "n_features": 128,
+      "n_classes": 2,
+      "n_rows": 78377
+    },
+    "capacity": {
+      "logistic_regression": {
+        "macro_f1_mean": 0.47768595943999215,
+        "macro_f1_std": 0.0016125217078244438
+      },
+      "tree_depth1": {
+        "macro_f1_mean": 0.41527156063381965,
+        "macro_f1_std": 7.978170440643851e-06
+      },
+      "tree_depth2": {
+        "macro_f1_mean": 0.41527156063381965,
+        "macro_f1_std": 7.978170440643851e-06
+      },
+      "tree_depth4": {
+        "macro_f1_mean": 0.4665125263986698,
+        "macro_f1_std": 0.029124877834281266
+      },
+      "tree_depth8": {
+        "macro_f1_mean": 0.620264511697404,
+        "macro_f1_std": 0.016298502705731334
+      },
+      "lightgbm": {
+        "macro_f1_mean": 0.7431535678660397,
+        "macro_f1_std": 0.0033278099143263847
+      },
+      "majority_class": {
+        "macro_f1_mean": 0.41527156063381965,
+        "macro_f1_std": 7.978170440643851e-06
+      }
+    }
+  },
+  "msu_nn_events_37class": {
+    "n_query": 4000,
+    "nn_from_same_event_fraction": 0.76,
+    "knn1_accuracy_any_neighbour": 0.79725,
+    "knn1_accuracy_neighbour_from_other_event": 0.11075
+  },
+  "msu_nn_events_binary": {
+    "n_query": 4000,
+    "nn_from_same_event_fraction": 0.76,
+    "knn1_accuracy_any_neighbour": 0.911,
+    "knn1_accuracy_neighbour_from_other_event": 0.6235
+  },
+  "msu_37class_n30000": {
+    "lightgbm": {
+      "macro_f1_mean": 0.6878303491692843,
+      "macro_f1_std": 0.004566498810842345
+    },
+    "majority_class": {
+      "macro_f1_mean": 0.003048435482426812,
+      "macro_f1_std": 3.929848374292674e-06
+    }
+  },
+  "msu_binary_n30000": {
+    "lightgbm": {
+      "macro_f1_mean": 0.7192032056971767,
+      "macro_f1_std": 0.007912411980615864
+    },
+    "majority_class": {
+      "macro_f1_mean": 0.41528446277550596,
+      "macro_f1_std": 2.791484195208564e-05
+    }
+  },
+  "msu_37class_top18": {
+    "lightgbm": {
+      "macro_f1_mean": 0.8229877079548664,
+      "macro_f1_std": 0.0036358211057359547
+    },
+    "majority_class": {
+      "macro_f1_mean": 0.0030488459640205462,
+      "macro_f1_std": 8.990906801121925e-08
+    }
+  },
+  "msu_binary_top18": {
+    "lightgbm": {
+      "macro_f1_mean": 0.7404252855230695,
+      "macro_f1_std": 0.005254202517639093
+    },
+    "majority_class": {
+      "macro_f1_mean": 0.41527156063381965,
+      "macro_f1_std": 7.978170440643851e-06
+    }
+  },
+  "msu_top18_features": [
+    "R4-PM2:V",
+    "R1-PM2:V",
+    "R3-PM2:V",
+    "R2-PM3:V",
+    "R1-PA:ZH",
+    "R4-PA:ZH",
+    "R1-PM1:V",
+    "R2-PM5:I",
+    "R3-PM5:I",
+    "R1-PM5:I",
+    "R4-PM5:I",
+    "R1-PM3:V",
+    "R1-PA3:VH",
+    "R2-PA5:IH",
+    "R4:F",
+    "R1-PA2:VH",
+    "R4-PA5:IH",
+    "R2-PA:ZH"
+  ]
+}

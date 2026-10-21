@@ -1,0 +1,95 @@
+{
+  "pairwise_spearman": {
+    "1-2": 0.9318885448916409,
+    "1-3": 0.9834881320949431,
+    "1-4": 0.9360165118679051,
+    "1-5": 0.9504643962848297,
+    "2-3": 0.9009287925696594,
+    "2-4": 0.9628482972136224,
+    "2-5": 0.9463364293085655,
+    "3-4": 0.9360165118679051,
+    "3-5": 0.954592363261094,
+    "4-5": 0.9711042311661506
+  },
+  "mean_pairwise_spearman": 0.9473684210526315,
+  "min_pairwise_spearman": 0.9009287925696594,
+  "top5_per_fold": [
+    [
+      "packet_error_rate",
+      "power_factor",
+      "phase_imbalance_percent",
+      "breaker_closed",
+      "substation_temp_c"
+    ],
+    [
+      "packet_error_rate",
+      "power_factor",
+      "phase_imbalance_percent",
+      "breaker_closed",
+      "substation_temp_c"
+    ],
+    [
+      "packet_error_rate",
+      "power_factor",
+      "breaker_closed",
+      "phase_imbalance_percent",
+      "substation_temp_c"
+    ],
+    [
+      "packet_error_rate",
+      "power_factor",
+      "phase_imbalance_percent",
+      "breaker_closed",
+      "substation_temp_c"
+    ],
+    [
+      "packet_error_rate",
+      "power_factor",
+      "phase_imbalance_percent",
+      "breaker_closed",
+      "substation_temp_c"
+    ]
+  ],
+  "modal_top5": [
+    "breaker_closed",
+    "packet_error_rate",
+    "phase_imbalance_percent",
+    "power_factor",
+    "substation_temp_c"
+  ],
+  "folds_with_modal_top5": 5,
+  "perturbation": {
+    "0.01": {
+      "mean": 0.982423116615067,
+      "std": 0.00164076821428453,
+      "trials": [
+        0.9835500515995872,
+        0.9805572755417957,
+        0.9825490196078431,
+        0.9843137254901961,
+        0.9812074303405572,
+        0.9822910216718267,
+        0.9849948400412797,
+        0.9793395252837976,
+        0.983343653250774,
+        0.9820846233230134
+      ]
+    },
+    "0.05": {
+      "mean": 0.9476160990712075,
+      "std": 0.0033358883708043993,
+      "trials": [
+        0.9472858617131064,
+        0.9492982456140351,
+        0.9483900928792569,
+        0.9435087719298246,
+        0.9525180598555211,
+        0.9401547987616099,
+        0.947327141382869,
+        0.9494736842105262,
+        0.9478328173374613,
+        0.9503715170278637
+      ]
+    }
+  }
+}

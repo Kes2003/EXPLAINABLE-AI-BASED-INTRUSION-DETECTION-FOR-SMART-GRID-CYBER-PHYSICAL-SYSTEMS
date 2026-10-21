@@ -1,0 +1,769 @@
+{
+  "base_macro_f1": 0.937984783737076,
+  "window": 250,
+  "n_windows": 300,
+  "rows": [
+    {
+      "feature": "voltage_v",
+      "k_sigma": 0.05,
+      "ks_detection_rate": 0.02,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.9371548826945929,
+      "macro_f1_drop": 0.0008299010424831499
+    },
+    {
+      "feature": "voltage_v",
+      "k_sigma": 0.1,
+      "ks_detection_rate": 0.01,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.9355146877104392,
+      "macro_f1_drop": 0.0024700960266368366
+    },
+    {
+      "feature": "voltage_v",
+      "k_sigma": 0.25,
+      "ks_detection_rate": 0.19333333333333333,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.933360381129179,
+      "macro_f1_drop": 0.0046244026078970935
+    },
+    {
+      "feature": "voltage_v",
+      "k_sigma": 0.5,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 0.7466666666666667,
+      "macro_f1": 0.9242523923250671,
+      "macro_f1_drop": 0.013732391412008993
+    },
+    {
+      "feature": "voltage_v",
+      "k_sigma": 1.0,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.8971440649588021,
+      "macro_f1_drop": 0.040840718778274
+    },
+    {
+      "feature": "current_a",
+      "k_sigma": 0.05,
+      "ks_detection_rate": 0.03,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.9382628910488832,
+      "macro_f1_drop": -0.00027810731180710757
+    },
+    {
+      "feature": "current_a",
+      "k_sigma": 0.1,
+      "ks_detection_rate": 0.02666666666666667,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.9382412492639091,
+      "macro_f1_drop": -0.00025646552683300516
+    },
+    {
+      "feature": "current_a",
+      "k_sigma": 0.25,
+      "ks_detection_rate": 0.3233333333333333,
+      "psi_detection_rate": 0.013333333333333334,
+      "macro_f1": 0.9376630694078287,
+      "macro_f1_drop": 0.00032171432924732457
+    },
+    {
+      "feature": "current_a",
+      "k_sigma": 0.5,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.9373676969135734,
+      "macro_f1_drop": 0.0006170868235026994
+    },
+    {
+      "feature": "current_a",
+      "k_sigma": 1.0,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.9363729947306888,
+      "macro_f1_drop": 0.0016117890063872542
+    },
+    {
+      "feature": "frequency_hz",
+      "k_sigma": 0.05,
+      "ks_detection_rate": 0.013333333333333334,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.9379422543732481,
+      "macro_f1_drop": 4.2529363827981115e-05
+    },
+    {
+      "feature": "frequency_hz",
+      "k_sigma": 0.1,
+      "ks_detection_rate": 0.013333333333333334,
+      "psi_detection_rate": 0.0033333333333333335,
+      "macro_f1": 0.9378520780657776,
+      "macro_f1_drop": 0.00013270567129841648
+    },
+    {
+      "feature": "frequency_hz",
+      "k_sigma": 0.25,
+      "ks_detection_rate": 0.15666666666666668,
+      "psi_detection_rate": 0.0033333333333333335,
+      "macro_f1": 0.9373391396445314,
+      "macro_f1_drop": 0.0006456440925446394
+    },
+    {
+      "feature": "frequency_hz",
+      "k_sigma": 0.5,
+      "ks_detection_rate": 0.9933333333333333,
+      "psi_detection_rate": 0.68,
+      "macro_f1": 0.9370426880623723,
+      "macro_f1_drop": 0.0009420956747037135
+    },
+    {
+      "feature": "frequency_hz",
+      "k_sigma": 1.0,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.9376366941417039,
+      "macro_f1_drop": 0.00034808959537213635
+    },
+    {
+      "feature": "power_factor",
+      "k_sigma": 0.05,
+      "ks_detection_rate": 0.013333333333333334,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.9384878325599917,
+      "macro_f1_drop": -0.0005030488229156305
+    },
+    {
+      "feature": "power_factor",
+      "k_sigma": 0.1,
+      "ks_detection_rate": 0.06333333333333334,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.9380012517654501,
+      "macro_f1_drop": -1.6468028374072574e-05
+    },
+    {
+      "feature": "power_factor",
+      "k_sigma": 0.25,
+      "ks_detection_rate": 0.5533333333333333,
+      "psi_detection_rate": 0.013333333333333334,
+      "macro_f1": 0.9391893656295867,
+      "macro_f1_drop": -0.0012045818925106033
+    },
+    {
+      "feature": "power_factor",
+      "k_sigma": 0.5,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 0.88,
+      "macro_f1": 0.9354399500719239,
+      "macro_f1_drop": 0.002544833665152124
+    },
+    {
+      "feature": "power_factor",
+      "k_sigma": 1.0,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.9249433495128775,
+      "macro_f1_drop": 0.013041434224198567
+    },
+    {
+      "feature": "active_power_kw",
+      "k_sigma": 0.05,
+      "ks_detection_rate": 0.01,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.9376830013081688,
+      "macro_f1_drop": 0.00030178242890721574
+    },
+    {
+      "feature": "active_power_kw",
+      "k_sigma": 0.1,
+      "ks_detection_rate": 0.013333333333333334,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.937643860938047,
+      "macro_f1_drop": 0.0003409227990290864
+    },
+    {
+      "feature": "active_power_kw",
+      "k_sigma": 0.25,
+      "ks_detection_rate": 0.26,
+      "psi_detection_rate": 0.006666666666666667,
+      "macro_f1": 0.9379514949094011,
+      "macro_f1_drop": 3.3288827674948784e-05
+    },
+    {
+      "feature": "active_power_kw",
+      "k_sigma": 0.5,
+      "ks_detection_rate": 0.9933333333333333,
+      "psi_detection_rate": 0.73,
+      "macro_f1": 0.9371090220344029,
+      "macro_f1_drop": 0.0008757617026731168
+    },
+    {
+      "feature": "active_power_kw",
+      "k_sigma": 1.0,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.9365093547290388,
+      "macro_f1_drop": 0.0014754290080372101
+    },
+    {
+      "feature": "reactive_power_kvar",
+      "k_sigma": 0.05,
+      "ks_detection_rate": 0.0033333333333333335,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.9386744552421519,
+      "macro_f1_drop": -0.0006896715050758173
+    },
+    {
+      "feature": "reactive_power_kvar",
+      "k_sigma": 0.1,
+      "ks_detection_rate": 0.01,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.9390192283540607,
+      "macro_f1_drop": -0.0010344446169846533
+    },
+    {
+      "feature": "reactive_power_kvar",
+      "k_sigma": 0.25,
+      "ks_detection_rate": 0.14666666666666667,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.9380067784590629,
+      "macro_f1_drop": -2.1994721986828836e-05
+    },
+    {
+      "feature": "reactive_power_kvar",
+      "k_sigma": 0.5,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.9380760903495237,
+      "macro_f1_drop": -9.130661244760585e-05
+    },
+    {
+      "feature": "reactive_power_kvar",
+      "k_sigma": 1.0,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.937774835378322,
+      "macro_f1_drop": 0.00020994835875409734
+    },
+    {
+      "feature": "thd_percent",
+      "k_sigma": 0.05,
+      "ks_detection_rate": 0.016666666666666666,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.9368282042686868,
+      "macro_f1_drop": 0.0011565794683892072
+    },
+    {
+      "feature": "thd_percent",
+      "k_sigma": 0.1,
+      "ks_detection_rate": 0.016666666666666666,
+      "psi_detection_rate": 0.0033333333333333335,
+      "macro_f1": 0.935627653877966,
+      "macro_f1_drop": 0.0023571298591100742
+    },
+    {
+      "feature": "thd_percent",
+      "k_sigma": 0.25,
+      "ks_detection_rate": 0.29,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.9343323894799456,
+      "macro_f1_drop": 0.003652394257130487
+    },
+    {
+      "feature": "thd_percent",
+      "k_sigma": 0.5,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.9271820483960239,
+      "macro_f1_drop": 0.010802735341052139
+    },
+    {
+      "feature": "thd_percent",
+      "k_sigma": 1.0,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.9140971228010113,
+      "macro_f1_drop": 0.02388766093606476
+    },
+    {
+      "feature": "breaker_closed",
+      "k_sigma": 0.05,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.937984783737076,
+      "macro_f1_drop": 0.0
+    },
+    {
+      "feature": "breaker_closed",
+      "k_sigma": 0.1,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.937984783737076,
+      "macro_f1_drop": 0.0
+    },
+    {
+      "feature": "breaker_closed",
+      "k_sigma": 0.25,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.937984783737076,
+      "macro_f1_drop": 0.0
+    },
+    {
+      "feature": "breaker_closed",
+      "k_sigma": 0.5,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.937984783737076,
+      "macro_f1_drop": 0.0
+    },
+    {
+      "feature": "breaker_closed",
+      "k_sigma": 1.0,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.937984783737076,
+      "macro_f1_drop": 0.0
+    },
+    {
+      "feature": "packet_rate",
+      "k_sigma": 0.05,
+      "ks_detection_rate": 0.0033333333333333335,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.9371572835356664,
+      "macro_f1_drop": 0.0008275002014096478
+    },
+    {
+      "feature": "packet_rate",
+      "k_sigma": 0.1,
+      "ks_detection_rate": 0.016666666666666666,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.9363463370810459,
+      "macro_f1_drop": 0.0016384466560301902
+    },
+    {
+      "feature": "packet_rate",
+      "k_sigma": 0.25,
+      "ks_detection_rate": 0.5566666666666666,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.933073765933113,
+      "macro_f1_drop": 0.00491101780396308
+    },
+    {
+      "feature": "packet_rate",
+      "k_sigma": 0.5,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.928264338471849,
+      "macro_f1_drop": 0.009720445265227085
+    },
+    {
+      "feature": "packet_rate",
+      "k_sigma": 1.0,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.899787904023213,
+      "macro_f1_drop": 0.0381968797138631
+    },
+    {
+      "feature": "packet_error_rate",
+      "k_sigma": 0.05,
+      "ks_detection_rate": 0.01,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.936105689195289,
+      "macro_f1_drop": 0.0018790945417870297
+    },
+    {
+      "feature": "packet_error_rate",
+      "k_sigma": 0.1,
+      "ks_detection_rate": 0.05,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.9354796190825813,
+      "macro_f1_drop": 0.002505164654494796
+    },
+    {
+      "feature": "packet_error_rate",
+      "k_sigma": 0.25,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.9308077751653547,
+      "macro_f1_drop": 0.007177008571721322
+    },
+    {
+      "feature": "packet_error_rate",
+      "k_sigma": 0.5,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.9165534879599141,
+      "macro_f1_drop": 0.021431295777161963
+    },
+    {
+      "feature": "packet_error_rate",
+      "k_sigma": 1.0,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.8557499500345841,
+      "macro_f1_drop": 0.08223483370249196
+    },
+    {
+      "feature": "substation_temp_c",
+      "k_sigma": 0.05,
+      "ks_detection_rate": 0.02,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.9157667806151764,
+      "macro_f1_drop": 0.0222180031218997
+    },
+    {
+      "feature": "substation_temp_c",
+      "k_sigma": 0.1,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.9116298302180793,
+      "macro_f1_drop": 0.02635495351899675
+    },
+    {
+      "feature": "substation_temp_c",
+      "k_sigma": 0.25,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 0.013333333333333334,
+      "macro_f1": 0.8992095737663333,
+      "macro_f1_drop": 0.0387752099707428
+    },
+    {
+      "feature": "substation_temp_c",
+      "k_sigma": 0.5,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.8718010603602737,
+      "macro_f1_drop": 0.06618372337680234
+    },
+    {
+      "feature": "substation_temp_c",
+      "k_sigma": 1.0,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.807877554057655,
+      "macro_f1_drop": 0.130107229679421
+    },
+    {
+      "feature": "transformer_oil_temp_c",
+      "k_sigma": 0.05,
+      "ks_detection_rate": 0.023333333333333334,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.8868849312433534,
+      "macro_f1_drop": 0.05109985249372262
+    },
+    {
+      "feature": "transformer_oil_temp_c",
+      "k_sigma": 0.1,
+      "ks_detection_rate": 0.03,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.8831855038780692,
+      "macro_f1_drop": 0.0547992798590069
+    },
+    {
+      "feature": "transformer_oil_temp_c",
+      "k_sigma": 0.25,
+      "ks_detection_rate": 0.42,
+      "psi_detection_rate": 0.01,
+      "macro_f1": 0.8675907387375708,
+      "macro_f1_drop": 0.0703940449995053
+    },
+    {
+      "feature": "transformer_oil_temp_c",
+      "k_sigma": 0.5,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.8343679434071133,
+      "macro_f1_drop": 0.10361684032996277
+    },
+    {
+      "feature": "transformer_oil_temp_c",
+      "k_sigma": 1.0,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.7519488478475144,
+      "macro_f1_drop": 0.1860359358895617
+    },
+    {
+      "feature": "line_load_percent",
+      "k_sigma": 0.05,
+      "ks_detection_rate": 0.03666666666666667,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.8024831522778273,
+      "macro_f1_drop": 0.13550163145924876
+    },
+    {
+      "feature": "line_load_percent",
+      "k_sigma": 0.1,
+      "ks_detection_rate": 0.11666666666666667,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.7930881854479671,
+      "macro_f1_drop": 0.14489659828910895
+    },
+    {
+      "feature": "line_load_percent",
+      "k_sigma": 0.25,
+      "ks_detection_rate": 0.7333333333333333,
+      "psi_detection_rate": 0.016666666666666666,
+      "macro_f1": 0.7658929781551368,
+      "macro_f1_drop": 0.17209180558193926
+    },
+    {
+      "feature": "line_load_percent",
+      "k_sigma": 0.5,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 0.8233333333333334,
+      "macro_f1": 0.72275849942967,
+      "macro_f1_drop": 0.2152262843074061
+    },
+    {
+      "feature": "line_load_percent",
+      "k_sigma": 1.0,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.6281266444891911,
+      "macro_f1_drop": 0.30985813924788497
+    },
+    {
+      "feature": "tap_position",
+      "k_sigma": 0.05,
+      "ks_detection_rate": 0.023333333333333334,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.9370843522321801,
+      "macro_f1_drop": 0.0009004315048959377
+    },
+    {
+      "feature": "tap_position",
+      "k_sigma": 0.1,
+      "ks_detection_rate": 0.03,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.9365042950853073,
+      "macro_f1_drop": 0.001480488651768752
+    },
+    {
+      "feature": "tap_position",
+      "k_sigma": 0.25,
+      "ks_detection_rate": 0.6366666666666667,
+      "psi_detection_rate": 0.03333333333333333,
+      "macro_f1": 0.9363504943336445,
+      "macro_f1_drop": 0.001634289403431577
+    },
+    {
+      "feature": "tap_position",
+      "k_sigma": 0.5,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 0.9666666666666667,
+      "macro_f1": 0.9364383832046634,
+      "macro_f1_drop": 0.0015464005324126173
+    },
+    {
+      "feature": "tap_position",
+      "k_sigma": 1.0,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.9346623218082236,
+      "macro_f1_drop": 0.003322461928852438
+    },
+    {
+      "feature": "phase_imbalance_percent",
+      "k_sigma": 0.05,
+      "ks_detection_rate": 0.0033333333333333335,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.9373939361739974,
+      "macro_f1_drop": 0.0005908475630787002
+    },
+    {
+      "feature": "phase_imbalance_percent",
+      "k_sigma": 0.1,
+      "ks_detection_rate": 0.07333333333333333,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.9368220665435635,
+      "macro_f1_drop": 0.0011627171935125746
+    },
+    {
+      "feature": "phase_imbalance_percent",
+      "k_sigma": 0.25,
+      "ks_detection_rate": 0.85,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.935383853991293,
+      "macro_f1_drop": 0.002600929745783076
+    },
+    {
+      "feature": "phase_imbalance_percent",
+      "k_sigma": 0.5,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.9264939332012696,
+      "macro_f1_drop": 0.011490850535806452
+    },
+    {
+      "feature": "phase_imbalance_percent",
+      "k_sigma": 1.0,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.8929321973022869,
+      "macro_f1_drop": 0.045052586434789155
+    },
+    {
+      "feature": "feeder_voltage_v",
+      "k_sigma": 0.05,
+      "ks_detection_rate": 0.02,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.9373608590244109,
+      "macro_f1_drop": 0.000623924712665147
+    },
+    {
+      "feature": "feeder_voltage_v",
+      "k_sigma": 0.1,
+      "ks_detection_rate": 0.023333333333333334,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.9379160460800422,
+      "macro_f1_drop": 6.873765703385715e-05
+    },
+    {
+      "feature": "feeder_voltage_v",
+      "k_sigma": 0.25,
+      "ks_detection_rate": 0.17,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.9378751294999607,
+      "macro_f1_drop": 0.00010965423711539746
+    },
+    {
+      "feature": "feeder_voltage_v",
+      "k_sigma": 0.5,
+      "ks_detection_rate": 0.9933333333333333,
+      "psi_detection_rate": 0.6966666666666667,
+      "macro_f1": 0.9375174552090588,
+      "macro_f1_drop": 0.0004673285280172301
+    },
+    {
+      "feature": "feeder_voltage_v",
+      "k_sigma": 1.0,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.9378227733155308,
+      "macro_f1_drop": 0.00016201042154528889
+    },
+    {
+      "feature": "feeder_current_a",
+      "k_sigma": 0.05,
+      "ks_detection_rate": 0.023333333333333334,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.9385417405744979,
+      "macro_f1_drop": -0.0005569568374218514
+    },
+    {
+      "feature": "feeder_current_a",
+      "k_sigma": 0.1,
+      "ks_detection_rate": 0.016666666666666666,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.9381971148016872,
+      "macro_f1_drop": -0.0002123310646111598
+    },
+    {
+      "feature": "feeder_current_a",
+      "k_sigma": 0.25,
+      "ks_detection_rate": 0.34,
+      "psi_detection_rate": 0.0,
+      "macro_f1": 0.937149850170297,
+      "macro_f1_drop": 0.0008349335667791058
+    },
+    {
+      "feature": "feeder_current_a",
+      "k_sigma": 0.5,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.9379075041219977,
+      "macro_f1_drop": 7.727961507830727e-05
+    },
+    {
+      "feature": "feeder_current_a",
+      "k_sigma": 1.0,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.9395502219965923,
+      "macro_f1_drop": -0.001565438259516272
+    },
+    {
+      "feature": "demand_kw",
+      "k_sigma": 0.05,
+      "ks_detection_rate": 0.013333333333333334,
+      "psi_detection_rate": 0.0033333333333333335,
+      "macro_f1": 0.9383295523493759,
+      "macro_f1_drop": -0.00034476861229981726
+    },
+    {
+      "feature": "demand_kw",
+      "k_sigma": 0.1,
+      "ks_detection_rate": 0.043333333333333335,
+      "psi_detection_rate": 0.0033333333333333335,
+      "macro_f1": 0.9377074153907021,
+      "macro_f1_drop": 0.0002773683463739296
+    },
+    {
+      "feature": "demand_kw",
+      "k_sigma": 0.25,
+      "ks_detection_rate": 0.5166666666666667,
+      "psi_detection_rate": 0.016666666666666666,
+      "macro_f1": 0.9381566231969451,
+      "macro_f1_drop": -0.0001718394598690942
+    },
+    {
+      "feature": "demand_kw",
+      "k_sigma": 0.5,
+      "ks_detection_rate": 0.9966666666666667,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.9385007080588574,
+      "macro_f1_drop": -0.0005159243217813803
+    },
+    {
+      "feature": "demand_kw",
+      "k_sigma": 1.0,
+      "ks_detection_rate": 1.0,
+      "psi_detection_rate": 1.0,
+      "macro_f1": 0.9392984996042644,
+      "macro_f1_drop": -0.0013137158671883142
+    }
+  ],
+  "summary": {
+    "0.05": {
+      "ks_detection_rate_mean": 0.0712962962962963,
+      "ks_detection_rate_min": 0.0033333333333333335,
+      "psi_detection_rate_mean": 0.1112962962962963,
+      "macro_f1_drop_mean": 0.011866640267377493,
+      "macro_f1_drop_max": 0.13550163145924876,
+      "max_drop_among_ks_undetected_lt50pct": 0.13550163145924876
+    },
+    "0.1": {
+      "ks_detection_rate_mean": 0.14185185185185184,
+      "ks_detection_rate_min": 0.01,
+      "psi_detection_rate_mean": 0.11166666666666668,
+      "macro_f1_drop_mean": 0.013164716663644346,
+      "macro_f1_drop_max": 0.14489659828910895,
+      "max_drop_among_ks_undetected_lt50pct": 0.14489659828910895
+    },
+    "0.25": {
+      "ks_detection_rate_mean": 0.5081481481481481,
+      "ks_detection_rate_min": 0.14666666666666667,
+      "psi_detection_rate_mean": 0.3403703703703704,
+      "macro_f1_drop_mean": 0.017022662328950493,
+      "macro_f1_drop_max": 0.17209180558193926,
+      "max_drop_among_ks_undetected_lt50pct": 0.0703940449995053
+    },
+    "0.5": {
+      "ks_detection_rate_mean": 0.9987037037037036,
+      "ks_detection_rate_min": 0.9933333333333333,
+      "psi_detection_rate_mean": 0.917962962962963,
+      "macro_f1_drop_mean": 0.025481562330707704,
+      "macro_f1_drop_max": 0.2152262843074061,
+      "max_drop_among_ks_undetected_lt50pct": null
+    },
+    "1.0": {
+      "ks_detection_rate_mean": 1.0,
+      "ks_detection_rate_min": 1.0,
+      "psi_detection_rate_mean": 1.0,
+      "macro_f1_drop_mean": 0.048528110711044056,
+      "macro_f1_drop_max": 0.30985813924788497,
+      "max_drop_among_ks_undetected_lt50pct": null
+    }
+  }
+}

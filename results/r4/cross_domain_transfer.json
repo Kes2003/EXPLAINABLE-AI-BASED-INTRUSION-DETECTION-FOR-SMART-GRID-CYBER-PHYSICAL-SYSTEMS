@@ -1,0 +1,67 @@
+{
+  "chance": {
+    "all_attack": {
+      "macro_f1": 0.41527156072814086,
+      "balanced_accuracy": 0.5,
+      "attack_recall": 1.0,
+      "false_alarm_rate_non_attack": 1.0,
+      "fraction_predicted_attack": 1.0
+    },
+    "attack_prevalence": 0.7101955930949131
+  },
+  "n_msu": 78377,
+  "T1_deployed_18feat_mapping_P": {
+    "macro_f1": 0.2664407387871434,
+    "balanced_accuracy": 0.5064452361987424,
+    "attack_recall": 0.04410470150728491,
+    "false_alarm_rate_non_attack": 0.031214229109800123,
+    "fraction_predicted_attack": 0.04036898579940544,
+    "roc_auc": 0.5148570615912492,
+    "predicted_class_distribution": {
+      "normal": 0.9596,
+      "fdi": 0.0267,
+      "tamper": 0.0137
+    }
+  },
+  "T2_synthetic_10feat_binary_mapping_P": {
+    "macro_f1": 0.2687140112208828,
+    "balanced_accuracy": 0.5063887426132758,
+    "attack_recall": 0.046853385552341774,
+    "false_alarm_rate_non_attack": 0.03407590032579026,
+    "fraction_predicted_attack": 0.0431504140245225,
+    "roc_auc": 0.5151341052991523
+  },
+  "T1_deployed_18feat_mapping_PU": {
+    "macro_f1": 0.4609068675495538,
+    "balanced_accuracy": 0.48122605522110695,
+    "attack_recall": 0.4900562312487649,
+    "false_alarm_rate_non_attack": 0.5276041208065511,
+    "fraction_predicted_attack": 0.5009377751125969,
+    "roc_auc": 0.48497705679357533,
+    "predicted_class_distribution": {
+      "normal": 0.4991,
+      "tamper": 0.4737,
+      "fdi": 0.0272
+    }
+  },
+  "T2_synthetic_10feat_binary_mapping_PU": {
+    "macro_f1": 0.46116455064212636,
+    "balanced_accuracy": 0.48128073005583283,
+    "attack_recall": 0.4911341465605519,
+    "false_alarm_rate_non_attack": 0.5285726864488861,
+    "fraction_predicted_attack": 0.5019840004082831,
+    "roc_auc": 0.47700694105992075
+  },
+  "R_in_domain_10feat_retrained_cv": {
+    "macro_f1_mean": 0.5957592392037535,
+    "macro_f1_std": 0.005367082236177279,
+    "balanced_accuracy_mean": 0.5964376731336153,
+    "roc_auc_mean": 0.7665261385797199
+  },
+  "R_in_domain_10feat_event_disjoint": {
+    "macro_f1_mean": 0.5657068469021331,
+    "macro_f1_std": 0.011954041885661052,
+    "balanced_accuracy_mean": 0.5738568160920163,
+    "roc_auc_mean": 0.6968232277065539
+  }
+}

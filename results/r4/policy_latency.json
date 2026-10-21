@@ -1,0 +1,39 @@
+{
+  "threshold": 0.7,
+  "n_predictions": 30000,
+  "response_accuracy": 0.9807333333333333,
+  "false_block_rate": 0.004353950569855295,
+  "false_blocks": 102,
+  "n_true_normal": 23427,
+  "missed_response_rate": 0.0866763666597381,
+  "missed_responses": 417,
+  "n_requiring_action": 4811,
+  "per_class": {
+    "normal": {
+      "n": 23427,
+      "correct_action": 23325
+    },
+    "dos": {
+      "n": 1896,
+      "correct_action": 1781
+    },
+    "fdi": {
+      "n": 1762,
+      "correct_action": 1737
+    },
+    "tamper": {
+      "n": 1565,
+      "correct_action": 1390
+    },
+    "overload": {
+      "n": 1350,
+      "correct_action": 1189
+    }
+  },
+  "latency_us": {
+    "n_calls": 150000,
+    "mean": 2.1137962066666667,
+    "median": 1.59,
+    "p99": 4.857
+  }
+}
