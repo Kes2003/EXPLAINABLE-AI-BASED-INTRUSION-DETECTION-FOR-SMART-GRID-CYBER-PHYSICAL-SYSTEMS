@@ -1,0 +1,50 @@
+events/binary/first_5 0.54
+events/triple/first_5 0.4966
+events/multiclass/first_5 0.0973
+events/binary/first_10 0.6952
+events/triple/first_10 0.6012
+events/multiclass/first_10 0.4551
+events/binary/first_20 0.7256
+events/triple/first_20 0.7378
+events/multiclass/first_20 0.5614
+events/binary/first_40 0.762
+events/triple/first_40 0.7924
+events/multiclass/first_40 0.6621
+events/binary/first_80 0.8494
+events/triple/first_80 0.8896
+events/multiclass/first_80 0.7691
+events/binary/first_all 0.8611
+events/triple/first_all 0.9082
+events/multiclass/first_all 0.8098
+rows/binary/raw 0.596 (25s)
+rows/binary/full 0.8105 (226s)
+rows/triple/raw 0.5915 (72s)
+rows/triple/full 0.8365 (446s)
+rows/multiclass/raw 0.1679 (860s)
+rows/multiclass/full 0.7013 (2718s)
+{
+ "events/binary/first_5": 0.54,
+ "events/triple/first_5": 0.4966,
+ "events/multiclass/first_5": 0.0973,
+ "events/binary/first_10": 0.6952,
+ "events/triple/first_10": 0.6012,
+ "events/multiclass/first_10": 0.4551,
+ "events/binary/first_20": 0.7256,
+ "events/triple/first_20": 0.7378,
+ "events/multiclass/first_20": 0.5614,
+ "events/binary/first_40": 0.762,
+ "events/triple/first_40": 0.7924,
+ "events/multiclass/first_40": 0.6621,
+ "events/binary/first_80": 0.8494,
+ "events/triple/first_80": 0.8896,
+ "events/multiclass/first_80": 0.7691,
+ "events/binary/first_all": 0.8611,
+ "events/triple/first_all": 0.9082,
+ "events/multiclass/first_all": 0.8098,
+ "rows/binary/raw": 0.596,
+ "rows/binary/full": 0.8105,
+ "rows/triple/raw": 0.5915,
+ "rows/triple/full": 0.8365,
+ "rows/multiclass/raw": 0.1679,
+ "rows/multiclass/full": 0.7013
+}
